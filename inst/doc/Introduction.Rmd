@@ -1,0 +1,124 @@
+---
+title: "Introduction"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+## Introduction to the `philentropy` Package
+
+Comparison is a fundamental method of scientific research leading to more general insights about the processes that generate similarity or dissimilarity. In statistical terms comparisons between probability functions are performed to infer connections, correlations, or relationships between samples. The `philentropy` package implements optimized distance and similarity measures for comparing probability functions. These comparisons between probability functions have their foundations in a broad range of scientific disciplines from mathematics to ecology. The aim of this package is to provide a base framework for clustering, classification, statistical inference, goodness-of-fit, non-parametric statistics, information theory, and machine learning tasks that are based on comparing univeriate or multivariate probability functions.
+
+Applying the method of comparison in statistics often means computing distances between probability functions. In this context [Sung-Hyuk Cha (2007)](http://csis.pace.edu/ctappert/dps/d861-12/session4-p2.pdf) provides a clear definition of distance : 
+
+> From the scientific and mathematical point of view, _distance_ is defined as a quantitative degree of how far apart two objects are.
+
+Cha's comprehensive review of distance/similarity measures motivated me to implement all these measures to better understand their comparative nature. As Cha states:
+
+> The choice of distance/similarity measures depends on the measurement type or representation of objects.
+
+As a result, the `philentropy` package implements functions that are part of the following topics:
+
+* Distance Measure
+* Information Theory
+* Correlation Analyses
+
+Personally, I hope that some of these functions are helpful to the R community.
+
+### Distance Measures
+
+Here, the [Distance Measure Vignette](https://github.com/HajkD/philentropy/blob/master/vignettes/Distances.Rmd) introduces how to work with the main function `distance()` that implements the 46 distance measures presented in Cha's review.
+
+Furthermore, for each distance/similarity measure a short description on usage and performance is presented.
+
+The following probability distance/similarity measures will be described in detail:
+
+#### $L_p$ Minkowski Family
+* Euclidean : $d = sqrt( \sum | P_i - Q_i |^2)$
+* Manhattan : $d = \sum | P_i - Q_i |$
+* Minkowski : $d = ( \sum | P_i - Q_i |^p)^{1/p}$
+* Chebyshev : $d = max | P_i - Q_i |$
+
+#### $L_1$ Family
+* Sorensen : $d = \sum | P_i - Q_i | / \sum (P_i + Q_i)$
+* Gower : $d = 1/d * \sum | P_i - Q_i |$
+* Soergel : $d = \sum | P_i - Q_i | / \sum max(P_i , Q_i)$
+* Kulczynski d : $d = \sum | P_i - Q_i | / \sum min(P_i , Q_i)$
+* Canberra : $d = \sum | P_i - Q_i | / (P_i + Q_i)$
+* Lorentzian : $d = \sum ln(1 + | P_i - Q_i |)$
+
+#### Intersection Family
+* Intersection : $s = \sum min(P_i , Q_i)$
+* Non-Intersection : $d = 1 - \sum min(P_i , Q_i)$
+* Wave Hedges : $d = \sum | P_i - Q_i | / max(P_i , Q_i)$
+* Czekanowski : $d = \sum | P_i - Q_i | / \sum | P_i + Q_i |$
+* Motyka : $d = \sum min(P_i , Q_i) / (P_i + Q_i)$
+* Kulczynski s : $d = 1 / \sum | P_i - Q_i | / \sum min(P_i , Q_i)$
+* Tanimoto : $d = \sum (max(P_i , Q_i) - min(P_i , Q_i)) / \sum max(P_i , Q_i)$ ; equivalent to Soergel
+* Ruzicka : $s = \sum min(P_i , Q_i) / \sum max(P_i , Q_i)$ ; equivalent to 1 - Tanimoto = 1 - Soergel 
+
+#### Inner Product Family
+* Inner Product : $s = \sum P_i * Q_i$
+* Harmonic mean : $s = 2 * \sum (P_i * Q_i) / (P_i + Q_i)$
+* Cosine : $s = \sum (P_i * Q_i) / sqrt(\sum P_i^2) * sqrt(\sum Q_i^2)$
+* Kumar-Hassebrook (PCE) : $s = \sum (P_i * Q_i) / (\sum P_i^2 + \sum Q_i^2 - \sum (P_i * Q_i))$
+* Jaccard : $d = 1 - \sum (P_i * Q_i) / (\sum P_i^2 + \sum Q_i^2 - \sum (P_i * Q_i))$ ; equivalent to 1 - Kumar-Hassebrook
+* Dice : $d = \sum (P_i - Q_i)^2 / (\sum P_i^2 + \sum Q_i^2)$
+
+#### Squared-chord Family
+* Fidelity : $s = \sum sqrt(P_i * Q_i)$
+* Bhattacharyya : $d = - ln \sum sqrt(P_i * Q_i)$
+* Hellinger : $d = 2 * sqrt( 1 - \sum sqrt(P_i * Q_i))$
+* Matusita : $d = sqrt( 2 - 2 * \sum sqrt(P_i * Q_i))$
+* Squared-chord : $d = \sum ( sqrt(P_i) - sqrt(Q_i) )^2$
+
+#### Squared $L_2$ family ($X^2$ squared family)
+* Squared Euclidean : $d = \sum ( P_i - Q_i )^2$
+* Pearson $X^2$ : $d = \sum ( (P_i - Q_i )^2 / Q_i )$
+* Neyman $X^2$ : $d = \sum ( (P_i - Q_i )^2 / P_i )$
+* Squared $X^2$ : $d = \sum ( (P_i - Q_i )^2 / (P_i + Q_i) )$
+* Probabilistic Symmetric $X^2$ : $d = 2 *  \sum ( (P_i - Q_i )^2 / (P_i + Q_i) )$
+* Divergence : $X^2$ : $d = 2 *  \sum ( (P_i - Q_i )^2 / (P_i + Q_i)^2 )$
+* Clark : $d = sqrt ( \sum (| P_i - Q_i | / (P_i + Q_i))^2 )$
+* Additive Symmetric $X^2$ : $d = \sum ( ((P_i - Q_i)^2 * (P_i + Q_i)) / (P_i * Q_i) )$
+
+#### Shannon's Entropy Family
+* Kullback-Leibler : $d = \sum P_i * log(P_i / Q_i)$
+* Jeffreys : $d = \sum (P_i - Q_i) * log(P_i / Q_i)$
+* K divergence : $d = \sum P_i * log(2 * P_i / P_i + Q_i)$
+* Topsoe : $d = \sum ( P_i * log(2 * P_i / P_i + Q_i) ) + ( Q_i * log(2 * Q_i / P_i + Q_i) )$
+* Jensen-Shannon :  $d = 0.5 * ( \sum P_i * log(2 * P_i / P_i + Q_i) + \sum Q_i * log(2 * Q_i / P_i + Q_i))$ 
+* Jensen difference : $d = \sum ( (P_i * log(P_i) + Q_i * log(Q_i) / 2) - (P_i + Q_i / 2) * log(P_i + Q_i / 2) )$
+
+#### Combinations
+* Taneja : $d = \sum ( P_i + Q_i / 2) * log( P_i + Q_i$ $/ ( 2 * sqrt( P_i * Q_i)) )$
+* Kumar-Johnson : $d = \sum (P_i^2 - Q_i^2)^2$ $/ 2 * (P_i * Q_i)^1.5$
+* Avg($L_1$, $L_n$) : $d = \sum | P_i - Q_i| + max{ | P_i - Q_i |}$ $/ 2$
+
+__Note__: $d$ refers to distance measures, whereas $s$ denotes similarity measures.
+
+### Information Theory
+
+Modern methods for distribution comparisons have a strong [information theoretic background](http://compbio.biosci.uq.edu.au/mediawiki/upload/b/b3/Jaynes_PhysRev1957-1.pdf). This fact motivated me to name this package `philentropy` and as a result, several well established information theory measures are (and further will be) implemeted in this package. 
+
+
+### Correlation Analyses
+
+Since my first stats class I am fascinated by the potential power of determining correlation and causality in data. For me part of the `philentropy` package is some kind of playground to better understand the diversity of methods that aim to perform [correlation detection](https://docs.google.com/viewer?a=v&pid=sites&srcid=dW1pY2guZWR1fG1pY2x8Z3g6MzczNDYxMjI3YzFhZDYyNw) and [causal inference](http://ftp.cs.ucla.edu/pub/stat_ser/r350.pdf). In detail, `philentropy` will implement classical linear and non-linear correlation methods as well as causal inference methods that aim to predict relationships between (random) variables. 
+
+
+#### Linear Correlation Methods
+
+* Pearson's correlation coefficient (centred)
+* Pearson's uncentred correlation coefficient
+* Squared Pearson's correlation coefficient
+* Kendall's correlation coefficient
+* Spearman's correlation coefficient
+
+
+
+
+
+
