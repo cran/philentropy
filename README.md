@@ -1,16 +1,19 @@
 philentropy
 ===========
 
+[![Travis-CI Build Status](https://travis-ci.org/HajkD/philentropy.svg?branch=master)](https://travis-ci.org/HajkD/philentropy) 
+
+
 ### Similarity and Distance Quantification between Probability Functions
 
 > Describe and understand the world through data.
 
 Data collection and data comparison are the foundations of scientific research.
 _Mathematics_ provides the abstract framework to describe patterns we observe in nature and _Statistics_ provides the
-framework to quantify the uncertainty of these patterns. In statistics natural patterns
+framework to quantify the uncertainty of these patterns. In statistics, natural patterns
 are described in form of probability distributions which either follow a fixed pattern (parametric distributions) or more dynamic patterns (non-parametric distributions).
 
-The `philentropy` package implements fundamental distance and similarity measures to quantify distances between probability density functions. In this regard, it aims to provide a framework for comparing
+The `philentropy` package implements fundamental distance and similarity measures to quantify distances between probability density functions as well as traditional information theory measures. In this regard, it aims to provide a framework for comparing
 natural patterns in a statistical notation.  
 
 This project is born out of my passion for statistics and I hope that it will be useful to
@@ -25,13 +28,22 @@ the people who share it with me.
  
  
 ### Installation
+```r
+# install philentropy version 0.0.1 from CRAN
+install.packages("philentropy")
+```
 
+### Install Developer Version
 ```r
 # install.packages("devtools")
 # install the current version of philentropy on your system
 library(devtools)
 install_github("HajkD/philentropy", build_vignettes = TRUE, dependencies = TRUE)
 ```
+
+### NEWS
+
+The current status of the package as well as a detailed history of the functionality of each version of `philentropy` can be found in the [NEWS](NEWS.md) section.
 
 ## Important Functions
 
