@@ -2,7 +2,7 @@ Package: philentropy
 Type: Package
 Title: Similarity and Distance Quantification Between Probability
         Functions
-Version: 0.0.2
+Version: 0.0.3
 Date: 2017-04-25
 Author: Hajk-Georg Drost
 Maintainer: Hajk-Georg Drost <hgd23@cam.ac.uk>
@@ -17,6 +17,6 @@ Suggests: testthat, knitr
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1
 NeedsCompilation: yes
-Packaged: 2017-05-04 16:07:57 UTC; h-gd
+Packaged: 2017-05-05 16:32:45 UTC; h-gd
 Repository: CRAN
-Date/Publication: 2017-05-04 16:26:09 UTC
+Date/Publication: 2017-05-08 21:32:22 UTC

@@ -29,7 +29,7 @@ the people who share it with me.
  
 ### Installation
 ```r
-# install philentropy version 0.0.1 from CRAN
+# install philentropy version 0.0.2 from CRAN
 install.packages("philentropy")
 ```
 
