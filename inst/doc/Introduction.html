@@ -68,7 +68,7 @@
 <h4><span class="math inline">\(L_1\)</span> Family</h4>
 <ul>
 <li>Sorensen : <span class="math inline">\(d = \sum | P_i - Q_i | / \sum (P_i + Q_i)\)</span></li>
-<li>Gower : <span class="math inline">\(d = 1/d * \sum | P_i - Q_i |\)</span></li>
+<li>Gower : <span class="math inline">\(d = 1/N * \sum | P_i - Q_i |\)</span>, where <span class="math inline">\(N\)</span> is the total number of elements <span class="math inline">\(i\)</span> in <span class="math inline">\(P_i\)</span> and <span class="math inline">\(Q_i\)</span></li>
 <li>Soergel : <span class="math inline">\(d = \sum | P_i - Q_i | / \sum max(P_i , Q_i)\)</span></li>
 <li>Kulczynski d : <span class="math inline">\(d = \sum | P_i - Q_i | / \sum min(P_i , Q_i)\)</span></li>
 <li>Canberra : <span class="math inline">\(d = \sum | P_i - Q_i | / (P_i + Q_i)\)</span></li>
@@ -146,10 +146,6 @@
 <div id="information-theory" class="section level3">
 <h3>Information Theory</h3>
 <p>Modern methods for distribution comparisons have a strong <a href="http://compbio.biosci.uq.edu.au/mediawiki/upload/b/b3/Jaynes_PhysRev1957-1.pdf">information theoretic background</a>. This fact motivated me to name this package <code>philentropy</code> and as a result, several well established information theory measures are (and further will be) implemeted in this package.</p>
-</div>
-<div id="correlation-analyses" class="section level3">
-<h3>Correlation Analyses</h3>
-<p>Since my first stats class I am fascinated by the potential power of determining correlation and causality in data. For me part of the <code>philentropy</code> package is some kind of playground to better understand the diversity of methods that aim to perform <a href="https://docs.google.com/viewer?a=v&amp;pid=sites&amp;srcid=dW1pY2guZWR1fG1pY2x8Z3g6MzczNDYxMjI3YzFhZDYyNw">correlation detection</a> and <a href="http://ftp.cs.ucla.edu/pub/stat_ser/r350.pdf">causal inference</a>. In detail, <code>philentropy</code> will implement classical linear and non-linear correlation methods as well as causal inference methods that aim to predict relationships between (random) variables.</p>
 <div id="linear-correlation-methods" class="section level4">
 <h4>Linear Correlation Methods</h4>
 <ul>
@@ -170,7 +166,7 @@
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

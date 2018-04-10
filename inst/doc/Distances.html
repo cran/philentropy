@@ -77,9 +77,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h3>Simple Example</h3>
 <p>The <code>distance()</code> function is implemented using the same <em>logic</em> as R’s base functions <code>stats::dist()</code> and takes a <code>matrix</code> or <code>data.frame</code> as input. The corresponding <code>matrix</code> or <code>data.frame</code> should store probability density functions (as rows) for which distance computations should be performed.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># define a probability density function P</span>
-P &lt;-<span class="st"> </span><span class="dv">1</span>:<span class="dv">10</span>/<span class="kw">sum</span>(<span class="dv">1</span>:<span class="dv">10</span>)
+P &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">10</span><span class="op">/</span><span class="kw">sum</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>)
 <span class="co"># define a probability density function Q</span>
-Q &lt;-<span class="st"> </span><span class="dv">20</span>:<span class="dv">29</span>/<span class="kw">sum</span>(<span class="dv">20</span>:<span class="dv">29</span>)
+Q &lt;-<span class="st"> </span><span class="dv">20</span><span class="op">:</span><span class="dv">29</span><span class="op">/</span><span class="kw">sum</span>(<span class="dv">20</span><span class="op">:</span><span class="dv">29</span>)
 
 <span class="co"># combine P and Q as matrix object</span>
 x &lt;-<span class="st"> </span><span class="kw">rbind</span>(P,Q)</code></pre></div>
@@ -92,7 +92,7 @@ x &lt;-<span class="st"> </span><span class="kw">rbind</span>(P,Q)</code></pre><
 0.1280713</code></pre>
 <p>For this simple case you can compare the results with R’s base function to compute the euclidean distance <code>stats::dist()</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># compute the Euclidean Distance using R's base function</span>
-stats::<span class="kw">dist</span>(x, <span class="dt">method =</span> <span class="st">&quot;euclidean&quot;</span>)</code></pre></div>
+stats<span class="op">::</span><span class="kw">dist</span>(x, <span class="dt">method =</span> <span class="st">&quot;euclidean&quot;</span>)</code></pre></div>
 <pre><code>          P
 Q 0.1280713</code></pre>
 <p>However, the R base function <code>stats::dist()</code> only computes the following distance measures: <code>&quot;euclidean&quot;, &quot;maximum&quot;, &quot;manhattan&quot;, &quot;canberra&quot;, &quot;binary&quot; or &quot;minkowski&quot;</code>, whereas <code>distance()</code> allows you to choose from 46 distance/similarity measures.</p>
@@ -118,7 +118,7 @@ Q 0.1280713</code></pre>
 0.133869</code></pre>
 <p>Analogously, in case a probability matrix is specified the following output is generated.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># combine three probabilty vectors to a probabilty matrix </span>
-ProbMatrix &lt;-<span class="st"> </span><span class="kw">rbind</span>(<span class="dv">1</span>:<span class="dv">10</span>/<span class="kw">sum</span>(<span class="dv">1</span>:<span class="dv">10</span>), <span class="dv">20</span>:<span class="dv">29</span>/<span class="kw">sum</span>(<span class="dv">20</span>:<span class="dv">29</span>),<span class="dv">30</span>:<span class="dv">39</span>/<span class="kw">sum</span>(<span class="dv">30</span>:<span class="dv">39</span>))
+ProbMatrix &lt;-<span class="st"> </span><span class="kw">rbind</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">10</span><span class="op">/</span><span class="kw">sum</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>), <span class="dv">20</span><span class="op">:</span><span class="dv">29</span><span class="op">/</span><span class="kw">sum</span>(<span class="dv">20</span><span class="op">:</span><span class="dv">29</span>),<span class="dv">30</span><span class="op">:</span><span class="dv">39</span><span class="op">/</span><span class="kw">sum</span>(<span class="dv">30</span><span class="op">:</span><span class="dv">39</span>))
 
 <span class="co"># compute the euclidean distance between all </span>
 <span class="co"># pairwise comparisons of probability vectors</span>
@@ -131,7 +131,7 @@ vec.3 0.1388172 0.01074588 0.00000000</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># compute the euclidean distance between all </span>
 <span class="co"># pairwise comparisons of probability vectors</span>
 <span class="co"># using stats::dist()</span>
-stats::<span class="kw">dist</span>(ProbMatrix, <span class="dt">method =</span> <span class="st">&quot;euclidean&quot;</span>)</code></pre></div>
+stats<span class="op">::</span><span class="kw">dist</span>(ProbMatrix, <span class="dt">method =</span> <span class="st">&quot;euclidean&quot;</span>)</code></pre></div>
 <pre><code>           1          2
 2 0.12807130           
 3 0.13881717 0.01074588</code></pre>
@@ -162,7 +162,7 @@ stats::<span class="kw">dist</span>(ProbMatrix, <span class="dt">method =</span>
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>
