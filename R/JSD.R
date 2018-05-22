@@ -15,7 +15,7 @@
 #' The Jensen-Shannon Divergence JSD(P || Q) between two probability
 #' distributions P and Q is defined as:
 #' 
-#' \deqn{JSP(P || Q) = 0.5 * (KL(P || R) + KL(Q || R))}
+#' \deqn{JSD(P || Q) = 0.5 * (KL(P || R) + KL(Q || R))}
 #' 
 #' where \eqn{R = 0.5 * (P + Q)} denotes the mid-point of the probability
 #' vectors P and Q, and KL(P || R), KL(Q || R) denote the Kullback-Leibler
@@ -53,7 +53,7 @@
 #' 
 #' # Example: Distance Matrix using JSD-Distance
 #' 
-#' Prob <- cbind(1:10/sum(1:10), 20:29/sum(20:29), 30:39/sum(30:39))
+#' Prob <- rbind(1:10/sum(1:10), 20:29/sum(20:29), 30:39/sum(30:39))
 #'
 #' # compute the KL matrix of a given probability matrix
 #' JSDMatrix <- JSD(Prob)

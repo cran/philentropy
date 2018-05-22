@@ -1,6 +1,6 @@
 //  Part of the philentropy package
 //
-//  Copyright (C) 2015-2017 Hajk-Georg Drost
+//  Copyright (C) 2015-2018 Hajk-Georg Drost
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -33,12 +33,20 @@
 
 // [[Rcpp::export]]
 double custom_log2(const double& x ){
-        return log(x)/log(2.0);
+        if (x == 0.0){
+          return NAN;
+        } else {
+          return log(x)/log(2.0);
+        }
 }
 
 // [[Rcpp::export]]
 double custom_log10(const double& x ){
-        return log(x)/log(10.0);
+  if (x == 0.0){
+    return NAN;
+  } else {
+    return log(x)/log(10.0);
+  }
 }
 
 // @export
@@ -200,7 +208,12 @@ double sorensen(const Rcpp::NumericVector& P, const Rcpp::NumericVector& Q, bool
                         dist2 += sum;
                 }
         }
-        return dist1/dist2;
+        
+        if (dist2 == 0.0) {
+                return NAN;
+        } else {
+                return dist1/dist2;
+        }
 }
 
 
@@ -216,6 +229,10 @@ double gower(const Rcpp::NumericVector& P, const Rcpp::NumericVector& Q, bool te
         
         if (P_len != Q_len){
                 Rcpp::stop("The vectors you are comparing do not have the same length!");
+        }
+        
+        if (P_len == 0){
+                Rcpp::stop("One of the input vectors has length 0 and cannot be processed!");
         }
         
         if(testNA){
@@ -278,7 +295,12 @@ double soergel(const Rcpp::NumericVector& P, const Rcpp::NumericVector& Q, bool 
                         dist2 += max_point;
                 } 
         }
-        return dist1/dist2;     
+        
+        if (dist2 == 0.0) {
+                return NAN;
+        } else {
+                return dist1/dist2;         
+        }
 }
 
 
@@ -331,7 +353,12 @@ double kulczynski_d(const Rcpp::NumericVector& P, const Rcpp::NumericVector& Q, 
                         }     
                 }
         }
-        return dist1/dist2;      
+        
+        if (dist2 == 0.0) {
+                return NAN;
+        } else {
+                return dist1/dist2;         
+        }     
 }
 
 
@@ -357,8 +384,8 @@ double canberra(const Rcpp::NumericVector& P, const Rcpp::NumericVector& Q, bool
                         }
                         diff = fabs(P[i] - Q[i]);
                         sum  = P[i] + Q[i];
-                        // replace 0/0 by 0 according to Sung-Hyuk Cha (2007)
-                        if ((diff == 0.0) && (sum == 0.0)){
+                        // replace 0/0 or x/0 or 0/x by 0 according to Sung-Hyuk Cha (2007)
+                        if ((diff == 0.0) || (sum == 0.0)){
                                 dist += 0.0;
                         } else {
                                 dist += diff / sum;
@@ -368,8 +395,8 @@ double canberra(const Rcpp::NumericVector& P, const Rcpp::NumericVector& Q, bool
                 for (int i = 0; i < P_len; i++){
                         diff = fabs(P[i] - Q[i]);
                         sum  = P[i] + Q[i];
-                        // replace 0/0 by 0 according to Sung-Hyuk Cha (2007)
-                        if ((diff == 0.0) && (sum == 0.0)){
+                        // replace 0/0 or x/0 or 0/x by 0 according to Sung-Hyuk Cha (2007)
+                        if ((diff == 0.0) || (sum == 0.0)){
                                 dist += 0.0;
                         } else {
                                 dist += diff / sum;
@@ -496,7 +523,7 @@ double wave_hedges(const Rcpp::NumericVector& P, const Rcpp::NumericVector& Q, b
                         } else {
                                 max_point = Q[i];
                         }
-                        if ((diff == 0.0) && (max_point == 0.0)){
+                        if ((diff == 0.0) || (max_point == 0.0)){
                                 dist += 0.0;
                         } else {
                                 dist += diff / max_point;
@@ -510,7 +537,7 @@ double wave_hedges(const Rcpp::NumericVector& P, const Rcpp::NumericVector& Q, b
                         } else {
                                 max_point = Q[i];
                         }
-                        if ((diff == 0.0) && (max_point == 0.0)){
+                        if ((diff == 0.0) || (max_point == 0.0)){
                                 dist += 0.0;
                         } else {
                                 dist += diff / max_point;
@@ -554,7 +581,12 @@ double czekanowski(const Rcpp::NumericVector& P, const Rcpp::NumericVector& Q, b
                         dist2 += sum;
                 }
         }
-        return dist1 / dist2;      
+        
+        if (dist2 == 0.0) {
+                return NAN;
+        } else {
+                return dist1/dist2;         
+        }       
 }
 
 
@@ -597,7 +629,11 @@ double motyka(const Rcpp::NumericVector& P, const Rcpp::NumericVector& Q, bool t
                 
         }
         
-        return (1.0 - (dist1 / dist2));  
+        if (dist2 == 0.0) {
+                return NAN;
+        } else {
+                return (1.0 - (dist1 / dist2));        
+        } 
 }
 
 
@@ -670,8 +706,7 @@ double harmonic_mean_dist(const Rcpp::NumericVector& P, const Rcpp::NumericVecto
                 prod = P[i] * Q[i];
                 sum  = P[i] + Q[i];
                 
-                if((prod == 0.0) && (sum == 0.0)){
-                        
+                if((prod == 0.0) || (sum == 0.0)){
                         dist += 0.0;
                 } else {
                         
@@ -712,7 +747,13 @@ double cosine_dist(const Rcpp::NumericVector& P, const Rcpp::NumericVector& Q, b
                 
         }
         
-        return (dist / (sqrt(p_square) * sqrt(q_square)));  
+        double dist2 = sqrt(p_square) * sqrt(q_square);
+        
+        if (dist2 == 0.0) {
+                return NAN;
+        } else {
+                return dist / dist2;
+        }
 }
 
 
@@ -745,7 +786,13 @@ double kumar_hassebrook(const Rcpp::NumericVector& P, const Rcpp::NumericVector&
                 
         }
         
-        return (dist / (p_square + q_square - dist));       
+        double dist2 = p_square + q_square - dist;
+        
+        if (dist2 == 0.0) {
+                return NAN;
+        } else {
+                return dist / dist2;
+        }
 }
 
 
@@ -787,7 +834,13 @@ double dice_dist(const Rcpp::NumericVector& P, const Rcpp::NumericVector& Q, boo
                 
         }
         
-        return (dist / (p_square + q_square));   
+        double dist2 = p_square + q_square;
+        
+        if (dist2 == 0.0) {
+                return NAN;
+        } else {
+                return (dist / dist2);         
+        }
 }
 
 
@@ -1035,7 +1088,7 @@ double squared_chi_sq(const Rcpp::NumericVector& P, const Rcpp::NumericVector& Q
                 PQdiff = pow(P[i] - Q[i], 2.0);
                 PQsum  = P[i] + Q[i];
                 
-                if((PQdiff == 0.0) && (PQsum == 0.0)){
+                if((PQdiff == 0.0) || (PQsum == 0.0)){
                         
                         dist += 0.0;
                 } else {
@@ -1083,7 +1136,7 @@ double divergence_sq(const Rcpp::NumericVector& P, const Rcpp::NumericVector& Q,
                 PQdiff = pow(P[i] - Q[i], 2.0);
                 PQsum  = pow(P[i] + Q[i], 2.0);
                 
-                if((PQdiff == 0.0) && (PQsum == 0.0)){
+                if((PQdiff == 0.0) || (PQsum == 0.0)){
                         
                         dist += 0.0;
                 } else {
@@ -1121,7 +1174,7 @@ double clark_sq(const Rcpp::NumericVector& P, const Rcpp::NumericVector& Q, bool
                 PQdiff = fabs(P[i] - Q[i]);
                 PQsum  = P[i] + Q[i];
                 
-                if((PQdiff == 0.0) && (PQsum == 0.0)){
+                if((PQdiff == 0.0) || (PQsum == 0.0)){
                         
                         dist += 0.0;
                 } else {
@@ -1158,7 +1211,7 @@ double additive_symm_chi_sq(const Rcpp::NumericVector& P, const Rcpp::NumericVec
                 PQsum  = P[i] + Q[i];
                 PQprod = P[i] * Q[i];
                 
-                if((PQsum == 0.0) && (PQprod == 0.0)){
+                if((PQsum == 0.0) || (PQprod == 0.0)){
                         
                         dist += 0.0;
                 } else {
@@ -1517,67 +1570,99 @@ double jensen_shannon(const Rcpp::NumericVector& P, const Rcpp::NumericVector& Q
                        if((Rcpp::NumericVector::is_na(P[i])) || (Rcpp::NumericVector::is_na(Q[i]))){
                                 Rcpp::stop("Your input vector stores NA values...");
                         }
-                        if((P[i] == 0.0) || (Q[i] == 0.0)){
-                                if (P[i] == 0.0)
-                                        sum1 += 0.0;
-                                if (Q[i] == 0.0)
-                                        sum2 += 0.0;
-                        } else {
-                        
-                                PQsum =   P[i] + Q[i];
+                               PQsum =   P[i] + Q[i];
                                 
                                 if (unit == "log"){
-                                        sum1  +=  P[i] * log((2.0 * P[i]) / PQsum);
-                                        sum2  +=  Q[i] * log((2.0 * Q[i]) / PQsum);
+                                  if (P[i] == 0.0 || PQsum == 0.0) {
+                                    sum1  += 0.0;
+                                  } else {
+                                    sum1  +=  P[i] * log((2.0 * P[i]) / PQsum);
+                                  }
+                                  if (Q[i] == 0.0 || PQsum == 0.0) {
+                                    sum2  += 0.0;
+                                  } else {
+                                    sum2  +=  Q[i] * log((2.0 * Q[i]) / PQsum);
+                                  }
                                 }
                                 
                                 else if (unit == "log2"){
-                                        sum1  +=  P[i] * custom_log2((2.0 * P[i]) / PQsum);
-                                        sum2  +=  Q[i] * custom_log2((2.0 * Q[i]) / PQsum);
+                                  if (P[i] == 0.0 || PQsum == 0.0) {
+                                    sum1  += 0.0;
+                                  } else {
+                                    sum1  +=  P[i] * custom_log2((2.0 * P[i]) / PQsum);
+                                  }
+                                  if (Q[i] == 0.0 || PQsum == 0.0) {
+                                    sum2  += 0.0;
+                                  } else {
+                                    sum2  +=  Q[i] * custom_log2((2.0 * Q[i]) / PQsum);
+                                  }
                                 }
                                 
                                 else if (unit == "log10"){
-                                        sum1  +=  P[i] * custom_log10((2.0 * P[i]) / PQsum);
-                                        sum2  +=  Q[i] * custom_log10((2.0 * Q[i]) / PQsum);
+                                  if (P[i] == 0.0 || PQsum == 0.0) {
+                                    sum1  += 0.0;
+                                  } else {
+                                    sum1  +=  P[i] * custom_log10((2.0 * P[i]) / PQsum);
+                                  }
+                                  if (Q[i] == 0.0 || PQsum == 0.0) {
+                                    sum2  += 0.0;
+                                  } else {
+                                    sum2  +=  Q[i] * custom_log10((2.0 * Q[i]) / PQsum);
+                                  }
                                 } else {
                                         Rcpp::stop("Please choose from units: log, log2, or log10.");
                                 }
                         }
-                }
+                
         } else {
                 
                 for(int i = 0; i < P_len; i++){
                        
-                        if((P[i] == 0.0) || (Q[i] == 0.0)){
-                                if (P[i] == 0.0)
-                                        sum1 += 0.0;
-                                if (Q[i] == 0.0)
-                                        sum2 += 0.0;
-                        } else {
-                        
                                 PQsum =   P[i] + Q[i];
                                 
                                 if (unit == "log"){
-                                        sum1  +=  P[i] * log((2.0 * P[i]) / PQsum);
-                                        sum2  +=  Q[i] * log((2.0 * Q[i]) / PQsum);
+                                  if (P[i] == 0.0 || PQsum == 0.0) {
+                                    sum1  += 0.0;
+                                  } else {
+                                    sum1  +=  P[i] * log((2.0 * P[i]) / PQsum);
+                                  }
+                                  if (Q[i] == 0.0 || PQsum == 0.0) {
+                                    sum2  += 0.0;
+                                  } else {
+                                    sum2  +=  Q[i] * log((2.0 * Q[i]) / PQsum);
+                                  }
                                 }
                                 
                                 else if (unit == "log2"){
-                                        sum1  +=  P[i] * custom_log2((2.0 * P[i]) / PQsum);
-                                        sum2  +=  Q[i] * custom_log2((2.0 * Q[i]) / PQsum);
+                                  if (P[i] == 0.0 || PQsum == 0.0) {
+                                    sum1  += 0.0;
+                                  } else {
+                                    sum1  +=  P[i] * custom_log2((2.0 * P[i]) / PQsum);
+                                  }
+                                  if (Q[i] == 0.0 || PQsum == 0.0) {
+                                    sum2  += 0.0;
+                                  } else {
+                                    sum2  +=  Q[i] * custom_log2((2.0 * Q[i]) / PQsum);
+                                  }
                                 }
                                 
                                 else if (unit == "log10"){
-                                        sum1  +=  P[i] * custom_log10((2.0 * P[i]) / PQsum);
-                                        sum2  +=  Q[i] * custom_log10((2.0 * Q[i]) / PQsum);
+                                  if (P[i] == 0.0 || PQsum == 0.0) {
+                                    sum1  += 0.0;
+                                  } else {
+                                    sum1  +=  P[i] * custom_log10((2.0 * P[i]) / PQsum);
+                                  }
+                                  if (Q[i] == 0.0 || PQsum == 0.0) {
+                                    sum2  += 0.0;
+                                  } else {
+                                    sum2  +=  Q[i] * custom_log10((2.0 * Q[i]) / PQsum);
+                                  }
                                 } else {
                                         Rcpp::stop("Please choose from units: log, log2, or log10.");
                                 }
                         }
                 }
-                
-        }
-
+              
         return 0.5 * (sum1 + sum2);
 }
 
@@ -1603,50 +1688,230 @@ double jensen_difference(const Rcpp::NumericVector& P, const Rcpp::NumericVector
                         if((Rcpp::NumericVector::is_na(P[i])) || (Rcpp::NumericVector::is_na(Q[i]))){
                                 Rcpp::stop("Your input vector stores NA values...");
                         }
-                        
-                        if((P[i] == 0.0) && (Q[i] == 0.0)){
-                                dist += 0.0;
-                        } else {
+
                                         PQsum = P[i] + Q[i];
                                         
                                         if (unit == "log"){
-                                                dist += (((P[i] * log(P[i])) + (Q[i] * log(Q[i]))) / 2.0) - ((PQsum / 2.0) * log(PQsum / 2.0)) ;
+                                          if (PQsum == 0.0 || P[i] == 0.0 || Q[i] == 0.0) {
+                                            if (PQsum == 0.0 && P[i] == 0.0 && Q[i] == 0.0){
+                                              dist += 0.0 ;
+                                            } 
+                                            if (P[i] == 0.0 && Q[i] > 0.0 && PQsum > 0.0) {
+                                              dist += ((0.0 + (Q[i] * log(Q[i]))) / 2.0) - ((PQsum / 2.0) * log(PQsum / 2.0)) ;
+                                            }
+                                            
+                                            if (P[i] > 0.0 && Q[i] == 0.0 && PQsum > 0.0) {
+                                              dist += (((P[i] * log(P[i])) + 0.0 ) / 2.0) - ((PQsum / 2.0) * log(PQsum / 2.0)) ;
+                                            }
+                                            
+                                            if (P[i] == 0.0 && Q[i] == 0.0 && PQsum > 0.0) {
+                                              dist += 0.0 - ((PQsum / 2.0) * log(PQsum / 2.0)) ;
+                                            }
+                                            
+                                            if (P[i] > 0.0 && Q[i] > 0.0 && PQsum == 0.0) {
+                                              dist += (((P[i] * log(P[i])) + (Q[i] * log(Q[i]))) / 2.0) - 0.0 ;
+                                            }
+                                            
+                                            if (P[i] > 0.0 && Q[i] == 0.0 && PQsum == 0.0) {
+                                              dist += (((P[i] * log(P[i])) + 0.0) / 2.0) - 0.0 ;
+                                            }
+                                            
+                                            if (P[i] == 0.0 && Q[i] > 0.0 && PQsum == 0.0) {
+                                              dist += ((0.0 + (Q[i] * log(Q[i]))) / 2.0) - 0.0 ;
+                                            }
+                                            
+                                          } else {
+                                            dist += (((P[i] * log(P[i])) + (Q[i] * log(Q[i]))) / 2.0) - ((PQsum / 2.0) * log(PQsum / 2.0)) ;
+                                          }    
+                                                
                                         }
                                         
                                         else if (unit == "log2"){
-                                                dist += (((P[i] * custom_log2(P[i])) + (Q[i] * custom_log2(Q[i]))) / 2.0) - ((PQsum / 2.0) * custom_log2(PQsum / 2.0)) ;
-                                        }
+                                          
+                                          if (PQsum == 0.0 || P[i] == 0.0 || Q[i] == 0.0) {
+                                            if (PQsum == 0.0 && P[i] == 0.0 && Q[i] == 0.0){
+                                            dist += 0.0 ;
+                                          } 
+                                           if (P[i] == 0.0 && Q[i] > 0.0 && PQsum > 0.0) {
+                                             dist += ((0.0 + (Q[i] * custom_log2(Q[i]))) / 2.0) - ((PQsum / 2.0) * custom_log2(PQsum / 2.0)) ;
+                                           }
+                                           
+                                           if (P[i] > 0.0 && Q[i] == 0.0 && PQsum > 0.0) {
+                                             dist += (((P[i] * custom_log2(P[i])) + 0.0 ) / 2.0) - ((PQsum / 2.0) * custom_log2(PQsum / 2.0)) ;
+                                           }
+                                           
+                                           if (P[i] == 0.0 && Q[i] == 0.0 && PQsum > 0.0) {
+                                             dist += 0.0 - ((PQsum / 2.0) * custom_log2(PQsum / 2.0)) ;
+                                           }
+                                           
+                                           if (P[i] > 0.0 && Q[i] > 0.0 && PQsum == 0.0) {
+                                             dist += (((P[i] * custom_log2(P[i])) + (Q[i] * custom_log2(Q[i]))) / 2.0) - 0.0 ;
+                                           }
+                                           
+                                           if (P[i] > 0.0 && Q[i] == 0.0 && PQsum == 0.0) {
+                                             dist += (((P[i] * custom_log2(P[i])) + 0.0) / 2.0) - 0.0 ;
+                                           }
+                                           
+                                           if (P[i] == 0.0 && Q[i] > 0.0 && PQsum == 0.0) {
+                                             dist += ((0.0 + (Q[i] * custom_log2(Q[i]))) / 2.0) - 0.0 ;
+                                           }
+                                           
+                                          } else {
+                                            dist += (((P[i] * custom_log2(P[i])) + (Q[i] * custom_log2(Q[i]))) / 2.0) - ((PQsum / 2.0) * custom_log2(PQsum / 2.0)) ;
+                                          }                                        
+                                          
+                                      }
                                         
                                         else if (unit == "log10"){
-                                                dist += (((P[i] * custom_log10(P[i])) + (Q[i] * custom_log10(Q[i]))) / 2.0) - ((PQsum / 2.0) * custom_log10(PQsum / 2.0)) ;
+                                          
+                                          if (PQsum == 0.0 || P[i] == 0.0 || Q[i] == 0.0) {
+                                            if (PQsum == 0.0 && P[i] == 0.0 && Q[i] == 0.0){
+                                              dist += 0.0 ;
+                                            } 
+                                            if (P[i] == 0.0 && Q[i] > 0.0 && PQsum > 0.0) {
+                                              dist += ((0.0 + (Q[i] * custom_log10(Q[i]))) / 2.0) - ((PQsum / 2.0) * custom_log10(PQsum / 2.0)) ;
+                                            }
+                                            
+                                            if (P[i] > 0.0 && Q[i] == 0.0 && PQsum > 0.0) {
+                                              dist += (((P[i] * custom_log10(P[i])) + 0.0 ) / 2.0) - ((PQsum / 2.0) * custom_log10(PQsum / 2.0)) ;
+                                            }
+                                            
+                                            if (P[i] == 0.0 && Q[i] == 0.0 && PQsum > 0.0) {
+                                              dist += 0.0 - ((PQsum / 2.0) * custom_log10(PQsum / 2.0)) ;
+                                            }
+                                            
+                                            if (P[i] > 0.0 && Q[i] > 0.0 && PQsum == 0.0) {
+                                              dist += (((P[i] * custom_log10(P[i])) + (Q[i] * custom_log10(Q[i]))) / 2.0) - 0.0 ;
+                                            }
+                                            
+                                            if (P[i] > 0.0 && Q[i] == 0.0 && PQsum == 0.0) {
+                                              dist += (((P[i] * custom_log10(P[i])) + 0.0) / 2.0) - 0.0 ;
+                                            }
+                                            
+                                            if (P[i] == 0.0 && Q[i] > 0.0 && PQsum == 0.0) {
+                                              dist += ((0.0 + (Q[i] * custom_log10(Q[i]))) / 2.0) - 0.0 ;
+                                            }
+                                            
+                                          } else {
+                                            dist += (((P[i] * custom_log10(P[i])) + (Q[i] * custom_log10(Q[i]))) / 2.0) - ((PQsum / 2.0) * custom_log10(PQsum / 2.0)) ;
+                                          }     
                                         } else {
                                                 Rcpp::stop("Please choose from units: log, log2, or log10.");
                                         }
-                        }
                 }
         } else {
                 
                 for(int i = 0; i < P_len; i++){
                         
-                        if((P[i] == 0.0) && (Q[i] == 0.0)){
-                                dist += 0.0;
-                        } else {
-                                        PQsum = P[i] + Q[i];
-                                        
-                                        if (unit == "log"){
-                                                dist += (((P[i] * log(P[i])) + (Q[i] * log(Q[i]))) / 2.0) - ((PQsum / 2.0) * log(PQsum / 2.0)) ;
-                                        }
-                                        
-                                        else if (unit == "log2"){
-                                                dist += (((P[i] * custom_log2(P[i])) + (Q[i] * custom_log2(Q[i]))) / 2.0) - ((PQsum / 2.0) * custom_log2(PQsum / 2.0)) ;
-                                        }
-                                        
-                                        else if (unit == "log10"){
-                                                dist += (((P[i] * custom_log10(P[i])) + (Q[i] * custom_log10(Q[i]))) / 2.0) - ((PQsum / 2.0) * custom_log10(PQsum / 2.0)) ;
-                                        } else {
-                                                Rcpp::stop("Please choose from units: log, log2, or log10.");
-                                        }
-                        }
+                        PQsum = P[i] + Q[i];
+                  
+                  if (unit == "log"){
+                    if (PQsum == 0.0 || P[i] == 0.0 || Q[i] == 0.0) {
+                      if (PQsum == 0.0 && P[i] == 0.0 && Q[i] == 0.0){
+                        dist += 0.0 ;
+                      } 
+                      if (P[i] == 0.0 && Q[i] > 0.0 && PQsum > 0.0) {
+                        dist += ((0.0 + (Q[i] * log(Q[i]))) / 2.0) - ((PQsum / 2.0) * log(PQsum / 2.0)) ;
+                      }
+                      
+                      if (P[i] > 0.0 && Q[i] == 0.0 && PQsum > 0.0) {
+                        dist += (((P[i] * log(P[i])) + 0.0 ) / 2.0) - ((PQsum / 2.0) * log(PQsum / 2.0)) ;
+                      }
+                      
+                      if (P[i] == 0.0 && Q[i] == 0.0 && PQsum > 0.0) {
+                        dist += 0.0 - ((PQsum / 2.0) * log(PQsum / 2.0)) ;
+                      }
+                      
+                      if (P[i] > 0.0 && Q[i] > 0.0 && PQsum == 0.0) {
+                        dist += (((P[i] * log(P[i])) + (Q[i] * log(Q[i]))) / 2.0) - 0.0 ;
+                      }
+                      
+                      if (P[i] > 0.0 && Q[i] == 0.0 && PQsum == 0.0) {
+                        dist += (((P[i] * log(P[i])) + 0.0) / 2.0) - 0.0 ;
+                      }
+                      
+                      if (P[i] == 0.0 && Q[i] > 0.0 && PQsum == 0.0) {
+                        dist += ((0.0 + (Q[i] * log(Q[i]))) / 2.0) - 0.0 ;
+                      }
+                      
+                    } else {
+                      dist += (((P[i] * log(P[i])) + (Q[i] * log(Q[i]))) / 2.0) - ((PQsum / 2.0) * log(PQsum / 2.0)) ;
+                    }    
+                    
+                  }
+                  
+                  else if (unit == "log2"){
+                    
+                    if (PQsum == 0.0 || P[i] == 0.0 || Q[i] == 0.0) {
+                      if (PQsum == 0.0 && P[i] == 0.0 && Q[i] == 0.0){
+                        dist += 0.0 ;
+                      } 
+                      if (P[i] == 0.0 && Q[i] > 0.0 && PQsum > 0.0) {
+                        dist += ((0.0 + (Q[i] * custom_log2(Q[i]))) / 2.0) - ((PQsum / 2.0) * custom_log2(PQsum / 2.0)) ;
+                      }
+                      
+                      if (P[i] > 0.0 && Q[i] == 0.0 && PQsum > 0.0) {
+                        dist += (((P[i] * custom_log2(P[i])) + 0.0 ) / 2.0) - ((PQsum / 2.0) * custom_log2(PQsum / 2.0)) ;
+                      }
+                      
+                      if (P[i] == 0.0 && Q[i] == 0.0 && PQsum > 0.0) {
+                        dist += 0.0 - ((PQsum / 2.0) * custom_log2(PQsum / 2.0)) ;
+                      }
+                      
+                      if (P[i] > 0.0 && Q[i] > 0.0 && PQsum == 0.0) {
+                        dist += (((P[i] * custom_log2(P[i])) + (Q[i] * custom_log2(Q[i]))) / 2.0) - 0.0 ;
+                      }
+                      
+                      if (P[i] > 0.0 && Q[i] == 0.0 && PQsum == 0.0) {
+                        dist += (((P[i] * custom_log2(P[i])) + 0.0) / 2.0) - 0.0 ;
+                      }
+                      
+                      if (P[i] == 0.0 && Q[i] > 0.0 && PQsum == 0.0) {
+                        dist += ((0.0 + (Q[i] * custom_log2(Q[i]))) / 2.0) - 0.0 ;
+                      }
+                      
+                    } else {
+                      dist += (((P[i] * custom_log2(P[i])) + (Q[i] * custom_log2(Q[i]))) / 2.0) - ((PQsum / 2.0) * custom_log2(PQsum / 2.0)) ;
+                    }                                        
+                    
+                  }
+                  
+                  else if (unit == "log10"){
+                    
+                    if (PQsum == 0.0 || P[i] == 0.0 || Q[i] == 0.0) {
+                      if (PQsum == 0.0 && P[i] == 0.0 && Q[i] == 0.0){
+                        dist += 0.0 ;
+                      } 
+                      if (P[i] == 0.0 && Q[i] > 0.0 && PQsum > 0.0) {
+                        dist += ((0.0 + (Q[i] * custom_log10(Q[i]))) / 2.0) - ((PQsum / 2.0) * custom_log10(PQsum / 2.0)) ;
+                      }
+                      
+                      if (P[i] > 0.0 && Q[i] == 0.0 && PQsum > 0.0) {
+                        dist += (((P[i] * custom_log10(P[i])) + 0.0 ) / 2.0) - ((PQsum / 2.0) * custom_log10(PQsum / 2.0)) ;
+                      }
+                      
+                      if (P[i] == 0.0 && Q[i] == 0.0 && PQsum > 0.0) {
+                        dist += 0.0 - ((PQsum / 2.0) * custom_log10(PQsum / 2.0)) ;
+                      }
+                      
+                      if (P[i] > 0.0 && Q[i] > 0.0 && PQsum == 0.0) {
+                        dist += (((P[i] * custom_log10(P[i])) + (Q[i] * custom_log10(Q[i]))) / 2.0) - 0.0 ;
+                      }
+                      
+                      if (P[i] > 0.0 && Q[i] == 0.0 && PQsum == 0.0) {
+                        dist += (((P[i] * custom_log10(P[i])) + 0.0) / 2.0) - 0.0 ;
+                      }
+                      
+                      if (P[i] == 0.0 && Q[i] > 0.0 && PQsum == 0.0) {
+                        dist += ((0.0 + (Q[i] * custom_log10(Q[i]))) / 2.0) - 0.0 ;
+                      }
+                      
+                    } else {
+                      dist += (((P[i] * custom_log10(P[i])) + (Q[i] * custom_log10(Q[i]))) / 2.0) - ((PQsum / 2.0) * custom_log10(PQsum / 2.0)) ;
+                    }     
+                  } else {
+                    Rcpp::stop("Please choose from units: log, log2, or log10.");
+                  }
                 }
                 
         }

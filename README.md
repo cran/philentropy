@@ -19,20 +19,65 @@ natural patterns in a statistical notation.
 This project is born out of my passion for statistics and I hope that it will be useful to
 the people who share it with me.
 
-
-## Tutorials 
-
- - [Introduction](https://github.com/HajkD/philentropy/blob/master/vignettes/Introduction.Rmd)
- - [Distances and Similarity Measures](https://github.com/HajkD/philentropy/blob/master/vignettes/Distances.Rmd)
- - [Information Theory](https://github.com/HajkD/philentropy/blob/master/vignettes/Information_Theory.Rmd)
- 
- 
 ### Installation
 ```r
-# install philentropy version 0.0.2 from CRAN
+# install philentropy version 0.1.0 from CRAN
 install.packages("philentropy")
 ```
 
+## Tutorials 
+
+ - [Introduction to the philentropy package](https://hajkd.github.io/philentropy/articles/Introduction.html)
+ - [Distance and Similarity Measures implemented in philentropy](https://hajkd.github.io/philentropy/articles/Distances.html)
+ - [Information Theory Metrics implemented in philentropy](https://hajkd.github.io/philentropy/articles/Information_Theory.html)
+
+## Examples
+
+```r
+library(philentropy)
+# retrieve available distance metrics
+getDistMethods()
+```
+
+```
+ [1] "euclidean"         "manhattan"         "minkowski"        
+ [4] "chebyshev"         "sorensen"          "gower"            
+ [7] "soergel"           "kulczynski_d"      "canberra"         
+[10] "lorentzian"        "intersection"      "non-intersection" 
+[13] "wavehedges"        "czekanowski"       "motyka"           
+[16] "kulczynski_s"      "tanimoto"          "ruzicka"          
+[19] "inner_product"     "harmonic_mean"     "cosine"           
+[22] "hassebrook"        "jaccard"           "dice"             
+[25] "fidelity"          "bhattacharyya"     "hellinger"        
+[28] "matusita"          "squared_chord"     "squared_euclidean"
+[31] "pearson"           "neyman"            "squared_chi"      
+[34] "prob_symm"         "divergence"        "clark"            
+[37] "additive_symm"     "kullback-leibler"  "jeffreys"         
+[40] "k_divergence"      "topsoe"            "jensen-shannon"   
+[43] "jensen_difference" "taneja"            "kumar-johnson"    
+[46] "avg"
+```
+
+```r
+# define a probability density function P
+P <- 1:10/sum(1:10)
+# define a probability density function Q
+Q <- 20:29/sum(20:29)
+
+# combine P and Q as matrix object
+x <- rbind(P,Q)
+
+# compute the jensen-shannon distance between
+# probability density functions P and Q
+distance(x, method = "jensen-shannon")
+```
+
+```
+jensen-shannon using unit 'log'.
+jensen-shannon 
+    0.02628933
+```
+ 
 ### Install Developer Version
 ```r
 # install.packages("devtools")
@@ -43,7 +88,7 @@ install_github("HajkD/philentropy", build_vignettes = TRUE, dependencies = TRUE)
 
 ### NEWS
 
-The current status of the package as well as a detailed history of the functionality of each version of `philentropy` can be found in the [NEWS](NEWS.md) section.
+The current status of the package as well as a detailed history of the functionality of each version of `philentropy` can be found in the [NEWS](https://hajkd.github.io/philentropy/news/index.html) section.
 
 ## Important Functions
 
@@ -63,9 +108,6 @@ The current status of the package as well as a detailed history of the functiona
 * `JSD()` : Jensen-Shannon Divergence
 * `gJSD()` : Generalized Jensen-Shannon Divergence
 
-### Correlation Analyses
-
-* `lin.cor()` : Computes linear correlations 
 
 ## Discussions and Bug Reports
 
