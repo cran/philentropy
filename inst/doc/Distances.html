@@ -17,7 +17,7 @@
 
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
+<style type="text/css" data-origin="pandoc">
 div.sourceCode { overflow-x: auto; }
 table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
   margin: 0; padding: 0; vertical-align: baseline; border: none; }
@@ -53,7 +53,29 @@ code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
 code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
 code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+
 </style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
 
 
 
@@ -152,6 +174,38 @@ stats<span class="op">::</span><span class="kw">dist</span>(ProbMatrix, <span cl
                    euclidean(x[1, ], x[2, ], FALSE)  4.329  4.9605  5.72378  5.4815  6.1240 22.510   100</code></pre>
 <p>As you can see, although the <code>distance()</code> function is quite fast, the internal checks cause it to be 2x slower than the base <code>dist()</code> function (for the <code>euclidean</code> example). Nevertheless, in case you need to implement a faster version of the corresponding distance measure you can type <code>philentropy::</code> and then <code>TAB</code> allowing you to select the base distance computation functions (written in C++), e.g. <code>philentropy::euclidean()</code> which is almost 3x faster than the base <code>dist()</code> function.</p>
 <p>The advantage of <code>distance()</code> is that it implements 46 distance measures based on base C++ functions that can be accessed individually by typing <code>philentropy::</code> and then <code>TAB</code>. In future versions of <code>philentropy</code> I will optimize the <code>distance()</code> function so that internal checks for data type correctness and correct input data will take less termination time than the base <code>dist()</code> function.</p>
+</div>
+</div>
+<div id="detailed-assessment-of-individual-similarity-and-distance-metrics" class="section level2">
+<h2>Detailed assessment of individual similarity and distance metrics</h2>
+<p>The vast amount of available similarity metrics raises the immediate question which metric should be used for which application. Here, I will review the origin of each individual metric and will discuss the most recent literature that aims to compare these measures. I hope that users will find valuable insights and might be stimulated to conduct their own comparative research since this is a field of ongoing research.</p>
+<div id="l_p-minkowski-family" class="section level3">
+<h3><span class="math inline">\(L_p\)</span> Minkowski Family</h3>
+<div id="euclidean-distance" class="section level4">
+<h4>Euclidean distance</h4>
+<p>The <a href="https://en.wikipedia.org/wiki/Euclidean_distance">euclidean distance</a> is (named after <a href="https://en.wikipedia.org/wiki/Euclid">Euclid</a>) a straight line distance between two points. Euclid argued that that the <strong>shortest</strong> distance between two points is always a line.</p>
+<blockquote>
+<p><span class="math inline">\(d = \sqrt{\sum_{i = 1}^N | P_i - Q_i |^2)}\)</span></p>
+</blockquote>
+</div>
+<div id="manhattan-distance" class="section level4">
+<h4>Manhattan distance</h4>
+<blockquote>
+<p><span class="math inline">\(d = \sum_{i = 1}^N | P_i - Q_i |\)</span></p>
+</blockquote>
+</div>
+<div id="minkowski-distance" class="section level4">
+<h4>Minkowski distance</h4>
+<blockquote>
+<p><span class="math inline">\(d = ( \sum_{i = 1}^N | P_i - Q_i |^p)^{1/p}\)</span></p>
+</blockquote>
+</div>
+<div id="chebyshev-distance" class="section level4">
+<h4>Chebyshev distance</h4>
+<blockquote>
+<p><span class="math inline">\(d = max | P_i - Q_i |\)</span></p>
+</blockquote>
+</div>
 </div>
 </div>
 
