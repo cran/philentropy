@@ -4,8 +4,18 @@
 \alias{distance}
 \title{Distances between Probability Density Functions}
 \usage{
-distance(x, method = "euclidean", p = NULL, test.na = TRUE,
-  unit = "log", est.prob = NULL)
+distance(
+  x,
+  method = "euclidean",
+  p = NULL,
+  test.na = TRUE,
+  unit = "log",
+  est.prob = NULL,
+  use.row.names = FALSE,
+  as.dist.obj = FALSE,
+  diag = FALSE,
+  upper = FALSE
+)
 }
 \arguments{
 \item{x}{a numeric \code{data.frame} or \code{matrix} (storing probability vectors) or a numeric \code{data.frame} or \code{matrix} storing counts (if \code{est.prob} is specified).}
@@ -22,6 +32,15 @@ distance(x, method = "euclidean", p = NULL, test.na = TRUE,
 \itemize{
 \item \code{est.prob = "empirical"}: The relative frequencies of each vector are computed internally. For example an input matrix \code{rbind(1:10, 11:20)} will be transformed to a probability vector \code{rbind(1:10 / sum(1:10), 11:20 / sum(11:20))}
 }}
+
+\item{use.row.names}{a logical value indicating whether or not row names from
+the input matrix shall be used as rownames and colnames of the output distance matrix. Default value is \code{use.row.names = FALSE}.}
+
+\item{as.dist.obj}{shall the return value or matrix be an object of class \code{link[stats]{dist}}? Default is \code{as.dist.obj = FALSE}.}
+
+\item{diag}{if \code{as.dist.obj = TRUE}, then this value indicates whether the diagonal of the distance matrix should be printed. Default}
+
+\item{upper}{if \code{as.dist.obj = TRUE}, then this value indicates whether the upper triangle of the distance matrix should be printed.}
 }
 \value{
 The following results are returned depending on the dimension of \code{x}:
@@ -129,8 +148,6 @@ from input count vectors and second compute the corresponding distance measure b
  \itemize{
  \item \code{est.prob = "empirical"} : relative frequencies of counts.
  }
-
-
 }
 }
 \note{
@@ -161,6 +178,12 @@ distance(ProbMatrix, method = "euclidean")
 
 # compute distance matrix without testing for NA values in the input matrix
 distance(ProbMatrix, method = "euclidean", test.na = FALSE)
+
+# alternatively use the colnames of the input data for the rownames and colnames
+# of the output distance matrix
+ProbMatrix <- rbind(1:10/sum(1:10), 20:29/sum(20:29),30:39/sum(30:39))
+rownames(ProbMatrix) <- paste0("Example", 1:3)
+distance(ProbMatrix, method = "euclidean", use.row.names = TRUE)
 
 # Specialized Examples
 

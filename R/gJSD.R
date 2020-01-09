@@ -66,15 +66,9 @@ gJSD <- function(x, unit = "log2", weights = NULL, est.prob = NULL) {
                 message(
                         "No weights were specified ('weights = NULL'), thus equal weights for all distributions will be calculated and applied."
                 )
-        
-        if (class(x) == "data.frame") {
-                x <- t(as.matrix(x))
-        } else {
-                x <- t(x)
-        }
-        
-        if (!(class(x) == "matrix"))
-                stop("Please enter a numeric probability matrix.", call. = FALSE)
+
+        # transpose input data
+        x <- t(as.matrix(x))
         
         message(
                 "Metric: 'gJSD'; unit = '",
@@ -90,7 +84,7 @@ gJSD <- function(x, unit = "log2", weights = NULL, est.prob = NULL) {
                 x <- apply(x, 2, estimate.probability, method = est.prob) 
         }
         # check for distribution validity
-        apply(x, 1, valid.distr)
+        apply(x, 2, valid.distr)
         
         nDistributions <- ncol(x)
         nElements <- nrow(x)
