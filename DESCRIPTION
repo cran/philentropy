@@ -2,8 +2,8 @@ Package: philentropy
 Type: Package
 Title: Similarity and Distance Quantification Between Probability
         Functions
-Version: 0.4.0
-Date: 2020-01-09
+Version: 0.5.0
+Date: 2021-05-11
 Authors@R: person("Hajk-Georg", "Drost",
                 role = c("aut", "cre"),
                 email = "hajk-georg.drost@tuebingen.mpg.de",
@@ -13,15 +13,15 @@ Description: Computes 46 optimized distance and similarity measures for comparin
 Depends: R (>= 3.1.2)
 Imports: Rcpp, dplyr, KernSmooth
 License: GPL-2
-LazyData: true
+LazyData: false
 LinkingTo: Rcpp
-URL: https://github.com/HajkD/philentropy
-Suggests: testthat, knitr
+URL: https://github.com/drostlab/philentropy
+Suggests: testthat, knitr, markdown
 VignetteBuilder: knitr
-BugReports: https://github.com/HajkD/philentropy/issues
-RoxygenNote: 7.0.2
+BugReports: https://github.com/drostlab/philentropy/issues
+RoxygenNote: 7.1.1
 NeedsCompilation: yes
-Packaged: 2020-01-09 14:20:07 UTC; hdrost
+Packaged: 2021-05-12 07:52:23 UTC; hdrost
 Author: Hajk-Georg Drost [aut, cre] (<https://orcid.org/0000-0002-1567-306X>)
 Repository: CRAN
-Date/Publication: 2020-01-10 00:00:03 UTC
+Date/Publication: 2021-05-12 15:30:02 UTC

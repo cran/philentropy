@@ -1,3 +1,18 @@
+## Version 0.5.0
+
+### New Features
+
+- the `distance()` function receives a new argument `mute.message` allowing users to mute  message printing when running large-scale distance computations.
+Example:
+
+```r
+distance(rbind(1:10/sum(1:10), 20:29/sum(20:29)), 
+         method = "euclidean", 
+         mute_message = TRUE)
+```
+
+- adding `markdown` dependency to `DESCRIPTION` ([find details here](https://github.com/yihui/knitr/issues/1864))
+
 ## Version 0.4.0
 
 ### New Features

@@ -1,9 +1,9 @@
 philentropy
 ===========
 
-[![Travis-CI Build Status](https://travis-ci.org/HajkD/philentropy.svg?branch=master)](https://travis-ci.org/HajkD/philentropy)  [![status](http://joss.theoj.org/papers/cad5ffc246ce197b06ccad1af7d2932a/status.svg)](http://joss.theoj.org/papers/cad5ffc246ce197b06ccad1af7d2932a)
-[![rstudio mirror downloads](http://cranlogs.r-pkg.org/badges/philentropy)](https://github.com/metacran/cranlogs.app)
-[![rstudio mirror downloads](http://cranlogs.r-pkg.org/badges/grand-total/philentropy)](https://github.com/metacran/cranlogs.app)
+[![Travis-CI Build Status](https://travis-ci.org/HajkD/philentropy.svg?branch=master)](https://travis-ci.org/HajkD/philentropy)  [![status](http://joss.theoj.org/papers/cad5ffc246ce197b06ccad1af7d2932a/status.svg)](https://joss.theoj.org/papers/10.21105/joss.00765)
+[![rstudio mirror downloads](http://cranlogs.r-pkg.org/badges/philentropy)](https://github.com/r-hub/cranlogs.app)
+[![rstudio mirror downloads](http://cranlogs.r-pkg.org/badges/grand-total/philentropy)](https://github.com/r-hub/cranlogs.app)
 
 
 ### Similarity and Distance Quantification between Probability Functions
@@ -23,7 +23,7 @@ the people who share it with me.
 
 ### Installation
 ```r
-# install philentropy version 0.3.0 from CRAN
+# install philentropy version 0.5.0 from CRAN
 install.packages("philentropy")
 ```
 
@@ -35,9 +35,9 @@ __I am developing `philentropy` in my spare time and would be very grateful if y
 
 ## Tutorials 
 
- - [Introduction to the philentropy package](https://hajkd.github.io/philentropy/articles/Introduction.html)
- - [Distance and Similarity Measures implemented in philentropy](https://hajkd.github.io/philentropy/articles/Distances.html)
- - [Information Theory Metrics implemented in philentropy](https://hajkd.github.io/philentropy/articles/Information_Theory.html)
+ - [Introduction to the philentropy package](https://drostlab.github.io/philentropy/articles/Introduction.html)
+ - [Distance and Similarity Measures implemented in philentropy](https://drostlab.github.io/philentropy/articles/Distances.html)
+ - [Information Theory Metrics implemented in philentropy](https://drostlab.github.io/philentropy/articles/Information_Theory.html)
 
 ## Examples
 
@@ -153,7 +153,7 @@ install_github("HajkD/philentropy", build_vignettes = TRUE, dependencies = TRUE)
 
 ### NEWS
 
-The current status of the package as well as a detailed history of the functionality of each version of `philentropy` can be found in the [NEWS](https://hajkd.github.io/philentropy/news/index.html) section.
+The current status of the package as well as a detailed history of the functionality of each version of `philentropy` can be found in the [NEWS](https://drostlab.github.io/philentropy/news/index.html) section.
 
 ## Important Functions
 
@@ -182,6 +182,27 @@ C Coupé, YM Oh, D Dediu, F Pellegrino - __Science Advances__, 2019
 >
 > - __Loss of adaptive capacity in asthmatic patients revealed by biomarker fluctuation dynamics after rhinovirus challenge__ A Sinha et al. - __eLife__, 2019
 >
+> - __The Tug1 lncRNA locus is essential for male fertility__ JP Lewandowski et al. - __Genome Biology__, 2020
+>
+> - __Sex and hatching order modulate the association between MHC‐II diversity and fitness in early‐life stages of a wild seabird__
+M Pineaux et al - __Molecular Ecology__, 2020
+>
+> - __How the Choice of Distance Measure Influences the Detection of Prior-Data Conflict__
+K Lek, R Van De Schoot - __Entropy__, 2019
+>
+> - __Differential variation analysis enables detection of tumor heterogeneity using single-cell RNA-sequencing data__
+EF Davis-Marcisak, TD Sherman et al. - __Cancer research__, 2019
+>
+> - __Multi-Omics Investigation of Innate Navitoclax Resistance in Triple-Negative Breast Cancer Cells__ M Marczyk et al. - __Cancers__, 2020
+>
+> - __Impact of Gut Microbiome on Hypertensive Patients with Low-Salt Intake: Shika Study Results__
+S Nagase et al. - __Frontiers in Medicine__, 2020
+>
+> - __Combined TCR Repertoire Profiles and Blood Cell Phenotypes Predict Melanoma Patient Response to Personalized Neoantigen Therapy plus Anti-PD-1__ A Poran et al. - __Cell Reports Medicine__, 2020
+>
+> - __SEDE-GPS: socio-economic data enrichment based on GPS information__
+T Sperlea, S Füser, J Boenigk, D Heider - __BMC bioinformatics__, 2018
+>
 > - __Evacuees and Migrants Exhibit Different Migration Systems after the Great East Japan Earthquake and Tsunami__
 M Hauer, S Holloway, T Oda – 2019
 >
@@ -191,17 +212,8 @@ P Phannachitta - __11th International Conference on Software__, 2017
 > - __Expression variation analysis for tumor heterogeneity in single-cell RNA-sequencing data__
 EF Davis-Marcisak, P Orugunta et al. - __BioRxiv__, 2018
 >
-> - __SEDE-GPS: socio-economic data enrichment based on GPS information__
-T Sperlea, S Füser, J Boenigk, D Heider - __BMC bioinformatics__, 2018
->
-> - __How the Choice of Distance Measure Influences the Detection of Prior-Data Conflict__
-K Lek, R Van De Schoot - __Entropy__, 2019
->
 > - __Concept acquisition and improved in-database similarity analysis for medical data__
 I Wiese, N Sarna, L Wiese, A Tashkandi, U Sax - __Distributed and Parallel Databases__, 2019
->
-> - __Differential variation analysis enables detection of tumor heterogeneity using single-cell RNA-sequencing data__
-EF Davis-Marcisak, TD Sherman et al. - __Cancer research__, 2019
 >
 > - __Dynamics of Vaginal and Rectal Microbiota over Several Menstrual Cycles in Female Cynomolgus Macaques__
 MT Nugeyre, N Tchitchek, C Adapen et al. - __Frontiers in Cellular and Infection Microbiology__, 2019
@@ -223,9 +235,6 @@ SS Samal, J Krishnan, AH Esfahani et al. - __Reasoning for Systems Biology and M
 >
 > - __Genome‐wide characterization and developmental expression profiling of long non‐coding RNAs in Sogatella furcifera__
 ZX Chang, OE Ajayi, DY Guo, QF Wu - __Insect science__, 2019
->
-> - __Loss of adaptive capacity in asthmatics revealed by biomarker fluctuation dynamics upon experimental rhinovirus challenge__
-A Sinha, R Lutter, B Xu, T Dekker, B Dierdorp et al. - __BioRxiv__, 2019
 >
 > - __Development of a simulation system for modeling the stock market to study its characteristics__
 P Mariya – 2018
@@ -253,11 +262,16 @@ V Frenz – 2019
 >
 > - __Kidney organoid reproducibility across multiple human iPSC lines and diminished off target cells after transplantation revealed by single cell transcriptomics__
 A Subramanian, EH Sidhom, M Emani et al. - __BioRxiv__, 2019
+>
 > - __Multi-classifier majority voting analyses in provenance studies on iron artefacts__
 G Żabiński et al. - __Journal of Archaeological Science__, 2020
-
-
-
+>
+> - __Identifying inhibitors of epithelial–mesenchymal plasticity using a network topology-based approach__
+K Hari et al. - __NPJ systems biology and applications__, 2020
+>
+> - __Genetic differentiation and intrinsic genomic features explain variation in recombination hotspots among cocoa tree populations__
+EJ Schwarzkopf et al. - __BMC Genomics__, 2020
+>
 
 
 
@@ -269,7 +283,7 @@ provided in this package.
 Furthermore, in case you find some bugs or need additional (more flexible) functionality of parts
 of this package, please let me know:
 
-https://github.com/HajkD/philentropy/issues
+https://github.com/drostlab/philentropy/issues
 
 or find me on [twitter: HajkDrost](https://twitter.com/hajkdrost) 
 
