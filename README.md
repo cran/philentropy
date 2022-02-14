@@ -38,13 +38,14 @@ __I am developing `philentropy` in my spare time and would be very grateful if y
  - [Introduction to the philentropy package](https://drostlab.github.io/philentropy/articles/Introduction.html)
  - [Distance and Similarity Measures implemented in philentropy](https://drostlab.github.io/philentropy/articles/Distances.html)
  - [Information Theory Metrics implemented in philentropy](https://drostlab.github.io/philentropy/articles/Information_Theory.html)
+- [Comparing many probability density functions](https://drostlab.github.io/philentropy/articles/Many_Distances.html)
 
 ## Examples
 
 ```r
 library(philentropy)
 # retrieve available distance metrics
-getDistMethods()
+philentropy::getDistMethods()
 ```
 
 ```
@@ -77,7 +78,7 @@ x <- rbind(P,Q)
 
 # compute the jensen-shannon distance between
 # probability density functions P and Q
-distance(x, method = "jensen-shannon")
+philentropy::distance(x, method = "jensen-shannon")
 ```
 
 ```
@@ -87,11 +88,11 @@ jensen-shannon
 ```
 
 Alternatively, users can also retrieve values from all available distance/similarity metrics
-using `dist.diversity()`:
+using `philentropy::dist.diversity()`:
 
 
 ```r
-dist.diversity(x, p = 2, unit = "log2")
+philentropy::dist.diversity(x, p = 2, unit = "log2")
 ```
 
 ```
@@ -175,6 +176,26 @@ The current status of the package as well as a detailed history of the functiona
 
 ### Studies that successfully applied the `philentropy` package
 
+> - __An atlas of gene regulatory elements in adult mouse cerebrum__ YE Li, S Preissl, X Hou, Z Zhang, K Zhang et al.- __Nature__, 2021
+>
+> - __Convergent somatic mutations in metabolism genes in chronic liver disease__ S Ng, F Rouhani, S Brunner, N Brzozowska et al. __Nature__, 2021
+>
+> - __Antigen dominance hierarchies shape TCF1+ progenitor CD8 T cell phenotypes in tumors__ ML Burger, AM Cruz, GE Crossland et al. - __Cell__, 2021
+>
+> - __High-content single-cell combinatorial indexing__ R Mulqueen et al. - __Nature Biotechnology__, 2021 
+>
+> - __Extinction at the end-Cretaceous and the origin of modern Neotropical rainforests__ MR Carvalho, C Jaramillo et al. - __Science__, 2021
+>
+> - __HERMES: a molecular-formula-oriented method to target the metabolome__
+R Giné, J Capellades, JM Badia et al. - __Nature Methods__, 2021
+>
+> - __The genetic architecture of temperature adaptation is shaped by population ancestry and not by selection regime__ KA Otte, V Nolte, F Mallard et al. - __Genome Biology__, 2021
+> 
+> - __Gut microbiome-mediated metabolism effects on immunity in rural and urban African populations__
+M Stražar, GS Temba, H Vlamakis et al. - __Nature Communications__, 2021
+>
+> - __Aging, inflammation and DNA damage in the somatic testicular niche with idiopathic germ cell aplasia__ M Alfano, AS Tascini, F Pederzoli et al. - __Nature communications__, 2021
+>
 > - __Single cell census of human kidney organoids shows reproducibility and diminished off-target cells after transplantation__ A Subramanian et al. - __Nature Communications__, 2019
 >
 > - __Different languages, similar encoding efficiency: Comparable information rates across the human communicative niche__
@@ -195,10 +216,13 @@ EF Davis-Marcisak, TD Sherman et al. - __Cancer research__, 2019
 >
 > - __Multi-Omics Investigation of Innate Navitoclax Resistance in Triple-Negative Breast Cancer Cells__ M Marczyk et al. - __Cancers__, 2020
 >
-> - __Impact of Gut Microbiome on Hypertensive Patients with Low-Salt Intake: Shika Study Results__
-S Nagase et al. - __Frontiers in Medicine__, 2020
+> - __Impact of Gut Microbiome on Hypertensive Patients with Low-Salt Intake: Shika Study Results__ S Nagase et al. - __Frontiers in Medicine__, 2020
 >
 > - __Combined TCR Repertoire Profiles and Blood Cell Phenotypes Predict Melanoma Patient Response to Personalized Neoantigen Therapy plus Anti-PD-1__ A Poran et al. - __Cell Reports Medicine__, 2020
+>
+> - __Phenotyping of acute and persistent COVID-19 features in the outpatient setting: exploratory analysis of an international cross-sectional online survey__ S Sahanic, P Tymoszuk, D Ausserhofer et al. - __medRxiv__, 2021
+>
+> - __A two-part evaluation approach for measuring the usability and user experience of an Augmented Reality-based assistance system to support the temporal coordination of spatially dispersed teams__ L Thomaschewski, B Weyers, A Kluge - __Cognitive Systems Research__, 2021
 >
 > - __SEDE-GPS: socio-economic data enrichment based on GPS information__
 T Sperlea, S Füser, J Boenigk, D Heider - __BMC bioinformatics__, 2018
@@ -208,6 +232,8 @@ M Hauer, S Holloway, T Oda – 2019
 >
 > - __Robust comparison of similarity measures in analogy based software effort estimation__
 P Phannachitta - __11th International Conference on Software__, 2017
+>
+> - __RUNIMC - An R-based package for imaging mass cytometry data analysis and pipeline validation__ L Dolcetti, PR Barber, G Weitsman, S Thavarajet al. - __bioRxiv__, 2021
 >
 > - __Expression variation analysis for tumor heterogeneity in single-cell RNA-sequencing data__
 EF Davis-Marcisak, P Orugunta et al. - __BioRxiv__, 2018
@@ -272,7 +298,20 @@ K Hari et al. - __NPJ systems biology and applications__, 2020
 > - __Genetic differentiation and intrinsic genomic features explain variation in recombination hotspots among cocoa tree populations__
 EJ Schwarzkopf et al. - __BMC Genomics__, 2020
 >
-
+> - __Enhancing Card Sorting Dendrograms through the Holistic Analysis of Distance Methods and Linkage Criteria.__ JA Macías - __Journal of Usability Studies__, 2021
+>
+> - __Pattern-based identification and mapping of landscape types using multi-thematic data__ J Nowosad, TF Stepinski - __International Journal of Geographical Information__, 2021
+>
+> - __Motif Analysis in k-mer Networks: An Approach towards Understanding SARS-CoV-2 Geographical Shifts__
+S Biswas, S Saha, S Bandyopadhyay, M Bhattacharyya - __bioRxiv__, 2020
+>
+> - __Motif: an open-source R tool for pattern-based spatial analysis__ J Nowosad - __Landscape Ecology__, 2021
+>
+> - __New effective spectral matching measures for hyperspectral data analysis__ C Kumar, S Chatterjee, T Oommen, A Guha - __International Journal of Remote Sensing__, 2021
+>
+> - __Innovative activity of Polish enterprises–a strategic aspect. The similarity of NACE divisions__ E Bielińska-Dusza, M Hamerska - __Journal of Entrepreneurship, Management and innovation__, 2021
+>
+> - __Multi-classifier majority voting analyses in provenance studies on iron artefacts__ G Żabiński, J Gramacki et al.- __Journal of Archaeological Science__, 2020
 
 
 ## Discussions and Bug Reports

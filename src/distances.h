@@ -366,12 +366,26 @@ double soergel(const Rcpp::NumericVector& P, const Rcpp::NumericVector& Q, bool 
 //' @param P a numeric vector storing the first distribution.
 //' @param Q a numeric vector storing the second distribution.
 //' @param testNA a logical value indicating whether or not distributions shall be checked for \code{NA} values.
+//' @param epsilon epsilon a small value to address cases in the distance computation where division by zero occurs. In
+//' these cases, x / 0 or 0 / 0 will be replaced by \code{epsilon}. The default is \code{epsilon = 0.00001}.
+//' However, we recommend to choose a custom \code{epsilon} value depending on the size of the input vectors,
+//' the expected similarity between compared probability density functions and 
+//' whether or not many 0 values are present within the compared vectors.
+//' As a rough rule of thumb we suggest that when dealing with very large 
+//' input vectors which are very similar and contain many \code{0} values,
+//' the \code{epsilon} value should be set even smaller (e.g. \code{epsilon = 0.000000001}),
+//' whereas when vector sizes are small or distributions very divergent then
+//' higher \code{epsilon} values may also be appropriate (e.g. \code{epsilon = 0.01}).
+//' Addressing this \code{epsilon} issue is important to avoid cases where distance metrics
+//' return negative values which are not defined and only occur due to the
+//' technical issues of computing x / 0 or 0 / 0 cases.
 //' @author Hajk-Georg Drost
 //' @examples
-//' kulczynski_d(P = 1:10/sum(1:10), Q = 20:29/sum(20:29), testNA = FALSE)
+//' kulczynski_d(P = 1:10/sum(1:10), Q = 20:29/sum(20:29),
+//'     testNA = FALSE, epsilon = 0.00001)
 //' @export
 // [[Rcpp::export]]
-double kulczynski_d(const Rcpp::NumericVector& P, const Rcpp::NumericVector& Q, bool testNA){
+double kulczynski_d(const Rcpp::NumericVector& P, const Rcpp::NumericVector& Q, bool testNA, double epsilon){
         
         int    P_len      = P.size();
         int    Q_len      = Q.size();
@@ -397,7 +411,7 @@ double kulczynski_d(const Rcpp::NumericVector& P, const Rcpp::NumericVector& Q, 
                         }
                         dist1 += diff;
                         if (min_point == 0.0){
-                                dist2 += 0.00001;
+                                dist2 += epsilon;
                         } else {
                                 dist2 += min_point;
                         }     
@@ -412,7 +426,7 @@ double kulczynski_d(const Rcpp::NumericVector& P, const Rcpp::NumericVector& Q, 
                         }
                         dist1 += diff;
                         if (min_point == 0.0){
-                                dist2 += 0.00001;
+                                dist2 += epsilon;
                         } else {
                                 dist2 += min_point;
                         }     
@@ -1067,22 +1081,49 @@ double fidelity(const Rcpp::NumericVector& P, const Rcpp::NumericVector& Q, bool
 //' @param Q a numeric vector storing the second distribution.
 //' @param testNA a logical value indicating whether or not distributions shall be checked for \code{NA} values.
 //' @param unit type of \code{log} function. Option are 
+//' @param epsilon epsilon a small value to address cases in the distance computation where division by zero occurs. In
+//' these cases, x / 0 or 0 / 0 will be replaced by \code{epsilon}. The default is \code{epsilon = 0.00001}.
+//' However, we recommend to choose a custom \code{epsilon} value depending on the size of the input vectors,
+//' the expected similarity between compared probability density functions and 
+//' whether or not many 0 values are present within the compared vectors.
+//' As a rough rule of thumb we suggest that when dealing with very large 
+//' input vectors which are very similar and contain many \code{0} values,
+//' the \code{epsilon} value should be set even smaller (e.g. \code{epsilon = 0.000000001}),
+//' whereas when vector sizes are small or distributions very divergent then
+//' higher \code{epsilon} values may also be appropriate (e.g. \code{epsilon = 0.01}).
+//' Addressing this \code{epsilon} issue is important to avoid cases where distance metrics
+//' return negative values which are not defined and only occur due to the
+//' technical issues of computing x / 0 or 0 / 0 cases.
 //' \itemize{
 //' \item \code{unit = "log"}
 //' \item \code{unit = "log2"}
 //' \item \code{unit = "log10"}   
 //' }
+//' @param epsilon epsilon a small value to address cases in the distance computation where division by zero occurs. In
+//' these cases, x / 0 or 0 / 0 will be replaced by \code{epsilon}. The default is \code{epsilon = 0.00001}.
+//' However, we recommend to choose a custom \code{epsilon} value depending on the size of the input vectors,
+//' the expected similarity between compared probability density functions and 
+//' whether or not many 0 values are present within the compared vectors.
+//' As a rough rule of thumb we suggest that when dealing with very large 
+//' input vectors which are very similar and contain many \code{0} values,
+//' the \code{epsilon} value should be set even smaller (e.g. \code{epsilon = 0.000000001}),
+//' whereas when vector sizes are small or distributions very divergent then
+//' higher \code{epsilon} values may also be appropriate (e.g. \code{epsilon = 0.01}).
+//' Addressing this \code{epsilon} issue is important to avoid cases where distance metrics
+//' return negative values which are not defined and only occur due to the
+//' technical issues of computing x / 0 or 0 / 0 cases.
 //' @author Hajk-Georg Drost
 //' @examples
-//' bhattacharyya(P = 1:10/sum(1:10), Q = 20:29/sum(20:29), testNA = FALSE, unit = "log2")
+//' bhattacharyya(P = 1:10/sum(1:10), Q = 20:29/sum(20:29), testNA = FALSE,
+//'  unit = "log2", epsilon = 0.00001)
 //' @export
 // [[Rcpp::export]]
-double bhattacharyya(const Rcpp::NumericVector& P, const Rcpp::NumericVector& Q, bool testNA, const Rcpp::String unit){
+double bhattacharyya(const Rcpp::NumericVector& P, const Rcpp::NumericVector& Q, bool testNA, const Rcpp::String unit, double epsilon){
         
         if (unit == "log"){
           double fid_value = fidelity(P,Q, testNA);
           if (fid_value == 0.0) {
-            return -log(fid_value + 0.00001);
+            return -log(fid_value + epsilon);
           } else {
             return -log(fid_value);
           }
@@ -1091,7 +1132,7 @@ double bhattacharyya(const Rcpp::NumericVector& P, const Rcpp::NumericVector& Q,
         else if (unit == "log2"){
           double fid_value = fidelity(P,Q, testNA);
           if (fid_value == 0.0) {
-            return -custom_log2(fid_value + 0.00001);
+            return -custom_log2(fid_value + epsilon);
           } else {
             return -custom_log2(fid_value);
           }
@@ -1100,7 +1141,7 @@ double bhattacharyya(const Rcpp::NumericVector& P, const Rcpp::NumericVector& Q,
         else if (unit == "log10"){
           double fid_value = fidelity(P,Q, testNA);
           if (fid_value == 0.0) {
-            return -custom_log10(fid_value + 0.00001);
+            return -custom_log10(fid_value + epsilon);
           } else {
             return -custom_log10(fid_value);
           }
@@ -1225,12 +1266,26 @@ double squared_euclidean(const Rcpp::NumericVector& P, const Rcpp::NumericVector
 //' @param P a numeric vector storing the first distribution.
 //' @param Q a numeric vector storing the second distribution.
 //' @param testNA a logical value indicating whether or not distributions shall be checked for \code{NA} values.
+//' @param epsilon epsilon a small value to address cases in the distance computation where division by zero occurs. In
+//' these cases, x / 0 or 0 / 0 will be replaced by \code{epsilon}. The default is \code{epsilon = 0.00001}.
+//' However, we recommend to choose a custom \code{epsilon} value depending on the size of the input vectors,
+//' the expected similarity between compared probability density functions and 
+//' whether or not many 0 values are present within the compared vectors.
+//' As a rough rule of thumb we suggest that when dealing with very large 
+//' input vectors which are very similar and contain many \code{0} values,
+//' the \code{epsilon} value should be set even smaller (e.g. \code{epsilon = 0.000000001}),
+//' whereas when vector sizes are small or distributions very divergent then
+//' higher \code{epsilon} values may also be appropriate (e.g. \code{epsilon = 0.01}).
+//' Addressing this \code{epsilon} issue is important to avoid cases where distance metrics
+//' return negative values which are not defined and only occur due to the
+//' technical issues of computing x / 0 or 0 / 0 cases.
 //' @author Hajk-Georg Drost
 //' @examples
-//' pearson_chi_sq(P = 1:10/sum(1:10), Q = 20:29/sum(20:29), testNA = FALSE)
+//' pearson_chi_sq(P = 1:10/sum(1:10), Q = 20:29/sum(20:29),
+//'  testNA = FALSE, epsilon = 0.00001)
 //' @export
 // [[Rcpp::export]]
-double pearson_chi_sq(const Rcpp::NumericVector& P, const Rcpp::NumericVector& Q, bool testNA){
+double pearson_chi_sq(const Rcpp::NumericVector& P, const Rcpp::NumericVector& Q, bool testNA, double epsilon){
         
         int    P_len      = P.size();
         int    Q_len      = Q.size();
@@ -1250,7 +1305,7 @@ double pearson_chi_sq(const Rcpp::NumericVector& P, const Rcpp::NumericVector& Q
                 
                          if(Q[i] == 0.0){
                         
-                                dist += pow(P[i] - Q[i], 2.0) / 0.00001 ;
+                                dist += pow(P[i] - Q[i], 2.0) / epsilon ;
                          } else {
                         
                                 dist += pow(P[i] - Q[i], 2.0) / Q[i];
@@ -1262,7 +1317,7 @@ double pearson_chi_sq(const Rcpp::NumericVector& P, const Rcpp::NumericVector& Q
                 
                          if(Q[i] == 0.0){
                         
-                                dist += pow(P[i] - Q[i], 2.0) / 0.00001 ;
+                                dist += pow(P[i] - Q[i], 2.0) / epsilon ;
                          } else {
                         
                                 dist += pow(P[i] - Q[i], 2.0) / Q[i];
@@ -1280,12 +1335,26 @@ double pearson_chi_sq(const Rcpp::NumericVector& P, const Rcpp::NumericVector& Q
 //' @param P a numeric vector storing the first distribution.
 //' @param Q a numeric vector storing the second distribution.
 //' @param testNA a logical value indicating whether or not distributions shall be checked for \code{NA} values.
+//' @param epsilon epsilon a small value to address cases in the distance computation where division by zero occurs. In
+//' these cases, x / 0 or 0 / 0 will be replaced by \code{epsilon}. The default is \code{epsilon = 0.00001}.
+//' However, we recommend to choose a custom \code{epsilon} value depending on the size of the input vectors,
+//' the expected similarity between compared probability density functions and 
+//' whether or not many 0 values are present within the compared vectors.
+//' As a rough rule of thumb we suggest that when dealing with very large 
+//' input vectors which are very similar and contain many \code{0} values,
+//' the \code{epsilon} value should be set even smaller (e.g. \code{epsilon = 0.000000001}),
+//' whereas when vector sizes are small or distributions very divergent then
+//' higher \code{epsilon} values may also be appropriate (e.g. \code{epsilon = 0.01}).
+//' Addressing this \code{epsilon} issue is important to avoid cases where distance metrics
+//' return negative values which are not defined and only occur due to the
+//' technical issues of computing x / 0 or 0 / 0 cases.
 //' @author Hajk-Georg Drost
 //' @examples
-//' neyman_chi_sq(P = 1:10/sum(1:10), Q = 20:29/sum(20:29), testNA = FALSE)
+//' neyman_chi_sq(P = 1:10/sum(1:10), Q = 20:29/sum(20:29),
+//'  testNA = FALSE, epsilon = 0.00001)
 //' @export
 // [[Rcpp::export]]
-double neyman_chi_sq(const Rcpp::NumericVector& P, const Rcpp::NumericVector& Q, bool testNA){
+double neyman_chi_sq(const Rcpp::NumericVector& P, const Rcpp::NumericVector& Q, bool testNA, double epsilon){
         
         int    P_len      = P.size();
         int    Q_len      = Q.size();
@@ -1305,7 +1374,7 @@ double neyman_chi_sq(const Rcpp::NumericVector& P, const Rcpp::NumericVector& Q,
                         
                         if(P[i] == 0.0){
                                 
-                                dist += pow(P[i] - Q[i], 2.0) / 0.00001;
+                                dist += pow(P[i] - Q[i], 2.0) / epsilon;
                         } else {
                         
                                 dist += pow(P[i] - Q[i], 2.0) / P[i];
@@ -1317,7 +1386,7 @@ double neyman_chi_sq(const Rcpp::NumericVector& P, const Rcpp::NumericVector& Q,
                 
                         if(P[i] == 0.0){
                                 
-                                dist += pow(P[i] - Q[i], 2.0) / 0.00001;
+                                dist += pow(P[i] - Q[i], 2.0) / epsilon;
                         } else {
                         
                                 dist += pow(P[i] - Q[i], 2.0) / P[i];
@@ -1541,12 +1610,26 @@ double additive_symm_chi_sq(const Rcpp::NumericVector& P, const Rcpp::NumericVec
 //' \item \code{unit = "log2"}
 //' \item \code{unit = "log10"}   
 //' }
+//' @param epsilon epsilon a small value to address cases in the distance computation where division by zero occurs. In
+//' these cases, x / 0 or 0 / 0 will be replaced by \code{epsilon}. The default is \code{epsilon = 0.00001}.
+//' However, we recommend to choose a custom \code{epsilon} value depending on the size of the input vectors,
+//' the expected similarity between compared probability density functions and 
+//' whether or not many 0 values are present within the compared vectors.
+//' As a rough rule of thumb we suggest that when dealing with very large 
+//' input vectors which are very similar and contain many \code{0} values,
+//' the \code{epsilon} value should be set even smaller (e.g. \code{epsilon = 0.000000001}),
+//' whereas when vector sizes are small or distributions very divergent then
+//' higher \code{epsilon} values may also be appropriate (e.g. \code{epsilon = 0.01}).
+//' Addressing this \code{epsilon} issue is important to avoid cases where distance metrics
+//' return negative values which are not defined and only occur due to the
+//' technical issues of computing x / 0 or 0 / 0 cases.
 //' @author Hajk-Georg Drost
 //' @examples
-//' kullback_leibler_distance(P = 1:10/sum(1:10), Q = 20:29/sum(20:29), testNA = FALSE, unit = "log2")
+//' kullback_leibler_distance(P = 1:10/sum(1:10), Q = 20:29/sum(20:29), testNA = FALSE,
+//'  unit = "log2", epsilon = 0.00001)
 //' @export
 // [[Rcpp::export]]
-double kullback_leibler_distance(const Rcpp::NumericVector& P, const Rcpp::NumericVector& Q, bool testNA, const Rcpp::String unit){
+double kullback_leibler_distance(const Rcpp::NumericVector& P, const Rcpp::NumericVector& Q, bool testNA, const Rcpp::String unit, double epsilon){
         
         int    P_len      = P.size();
         int    Q_len      = Q.size();
@@ -1569,7 +1652,7 @@ double kullback_leibler_distance(const Rcpp::NumericVector& P, const Rcpp::Numer
                         } else {
                                 
                                 if(Q[i] == 0.0){
-                                        PQratio = P[i] / 0.00001;
+                                        PQratio = P[i] / epsilon;
                                 } else {
                                 
                                         PQratio = P[i] / Q[i];
@@ -1611,7 +1694,7 @@ double kullback_leibler_distance(const Rcpp::NumericVector& P, const Rcpp::Numer
                         } else {
                                 
                                 if(Q[i] == 0.0){
-                                        PQratio = P[i] / 0.00001;
+                                        PQratio = P[i] / epsilon;
                                 } else {
                                 
                                         PQratio = P[i] / Q[i];
@@ -1660,12 +1743,26 @@ double kullback_leibler_distance(const Rcpp::NumericVector& P, const Rcpp::Numer
 //' \item \code{unit = "log2"}
 //' \item \code{unit = "log10"}   
 //' }
+//' @param epsilon epsilon a small value to address cases in the distance computation where division by zero occurs. In
+//' these cases, x / 0 or 0 / 0 will be replaced by \code{epsilon}. The default is \code{epsilon = 0.00001}.
+//' However, we recommend to choose a custom \code{epsilon} value depending on the size of the input vectors,
+//' the expected similarity between compared probability density functions and 
+//' whether or not many 0 values are present within the compared vectors.
+//' As a rough rule of thumb we suggest that when dealing with very large 
+//' input vectors which are very similar and contain many \code{0} values,
+//' the \code{epsilon} value should be set even smaller (e.g. \code{epsilon = 0.000000001}),
+//' whereas when vector sizes are small or distributions very divergent then
+//' higher \code{epsilon} values may also be appropriate (e.g. \code{epsilon = 0.01}).
+//' Addressing this \code{epsilon} issue is important to avoid cases where distance metrics
+//' return negative values which are not defined and only occur due to the
+//' technical issues of computing x / 0 or 0 / 0 cases.
 //' @author Hajk-Georg Drost
 //' @examples
-//' jeffreys(P = 1:10/sum(1:10), Q = 20:29/sum(20:29), testNA = FALSE, unit = "log2")
+//' jeffreys(P = 1:10/sum(1:10), Q = 20:29/sum(20:29), testNA = FALSE,
+//'  unit = "log2", epsilon = 0.00001)
 //' @export
 // [[Rcpp::export]]
-double jeffreys(const Rcpp::NumericVector& P, const Rcpp::NumericVector& Q, bool testNA, const Rcpp::String unit){
+double jeffreys(const Rcpp::NumericVector& P, const Rcpp::NumericVector& Q, bool testNA, const Rcpp::String unit, double epsilon){
         
         int    P_len      = P.size();
         int    Q_len      = Q.size();
@@ -1685,22 +1782,22 @@ double jeffreys(const Rcpp::NumericVector& P, const Rcpp::NumericVector& Q, bool
                         }
                         
                         if(Q[i] == 0.0){
-                                PQrate = P[i] / 0.00001;
+                                PQrate = P[i] / epsilon;
                         } else {
                                 PQrate = P[i] / Q[i];
                         }
                 
                         if(PQrate == 0.0){
                                 if (unit == "log"){
-                                        dist += (P[i] - Q[i]) * log(0.00001);
+                                        dist += (P[i] - Q[i]) * log(epsilon);
                                 }
                                 
                                 else if (unit == "log2"){
-                                        dist += (P[i] - Q[i]) * custom_log2(0.00001);
+                                        dist += (P[i] - Q[i]) * custom_log2(epsilon);
                                 } 
                                 
                                 else if (unit == "log10"){
-                                        dist += (P[i] - Q[i]) * custom_log10(0.00001);
+                                        dist += (P[i] - Q[i]) * custom_log10(epsilon);
                                 } else {
                                         Rcpp::stop("Please choose from units: log, log2, or log10.");
                                 }
@@ -1726,22 +1823,22 @@ double jeffreys(const Rcpp::NumericVector& P, const Rcpp::NumericVector& Q, bool
                 for(int i = 0; i < P_len; i++){
                         
                         if(Q[i] == 0.0){
-                                PQrate = P[i] / 0.00001;
+                                PQrate = P[i] / epsilon;
                         } else {
                                 PQrate = P[i] / Q[i];
                         }
                 
                         if(PQrate == 0.0){
                                 if (unit == "log"){
-                                        dist += (P[i] - Q[i]) * log(0.00001);
+                                        dist += (P[i] - Q[i]) * log(epsilon);
                                 }
                                 
                                 else if (unit == "log2"){
-                                        dist += (P[i] - Q[i]) * custom_log2(0.00001);
+                                        dist += (P[i] - Q[i]) * custom_log2(epsilon);
                                 } 
                                 
                                 else if (unit == "log10"){
-                                        dist += (P[i] - Q[i]) * custom_log10(0.00001);
+                                        dist += (P[i] - Q[i]) * custom_log10(epsilon);
                                 } else {
                                         Rcpp::stop("Please choose from units: log, log2, or log10.");
                                 }
@@ -2344,12 +2441,26 @@ double jensen_difference(const Rcpp::NumericVector& P, const Rcpp::NumericVector
 //' \item \code{unit = "log2"}
 //' \item \code{unit = "log10"}   
 //' }
+//' @param epsilon epsilon a small value to address cases in the distance computation where division by zero occurs. In
+//' these cases, x / 0 or 0 / 0 will be replaced by \code{epsilon}. The default is \code{epsilon = 0.00001}.
+//' However, we recommend to choose a custom \code{epsilon} value depending on the size of the input vectors,
+//' the expected similarity between compared probability density functions and 
+//' whether or not many 0 values are present within the compared vectors.
+//' As a rough rule of thumb we suggest that when dealing with very large 
+//' input vectors which are very similar and contain many \code{0} values,
+//' the \code{epsilon} value should be set even smaller (e.g. \code{epsilon = 0.000000001}),
+//' whereas when vector sizes are small or distributions very divergent then
+//' higher \code{epsilon} values may also be appropriate (e.g. \code{epsilon = 0.01}).
+//' Addressing this \code{epsilon} issue is important to avoid cases where distance metrics
+//' return negative values which are not defined and only occur due to the
+//' technical issues of computing x / 0 or 0 / 0 cases.
 //' @author Hajk-Georg Drost
 //' @examples
-//' taneja(P = 1:10/sum(1:10), Q = 20:29/sum(20:29), testNA = FALSE, unit = "log2")
+//' taneja(P = 1:10/sum(1:10), Q = 20:29/sum(20:29), testNA = FALSE,
+//'  unit = "log2", epsilon = 0.00001)
 //' @export
 // [[Rcpp::export]]
-double taneja(const Rcpp::NumericVector& P, const Rcpp::NumericVector& Q, bool testNA, const Rcpp::String unit){
+double taneja(const Rcpp::NumericVector& P, const Rcpp::NumericVector& Q, bool testNA, const Rcpp::String unit, double epsilon){
         
         int    P_len       = P.size();
         int    Q_len       = Q.size();
@@ -2378,15 +2489,15 @@ double taneja(const Rcpp::NumericVector& P, const Rcpp::NumericVector& Q, bool t
                                 if(denominator == 0.0){
                                         
                                         if (unit == "log"){
-                                                dist += (PQsum / 2.0) * log(PQsum / 0.00001);
+                                                dist += (PQsum / 2.0) * log(PQsum / epsilon);
                                         }
                                         
                                         else if (unit == "log2"){
-                                                dist += (PQsum / 2.0) * custom_log2(PQsum / 0.00001);
+                                                dist += (PQsum / 2.0) * custom_log2(PQsum / epsilon);
                                         }
                                         
                                         else if (unit == "log10"){
-                                                dist += (PQsum / 2.0) * custom_log10(PQsum / 0.00001);
+                                                dist += (PQsum / 2.0) * custom_log10(PQsum / epsilon);
                                         } else {
                                                 Rcpp::stop("Please choose from units: log, log2, or log10.");
                                         }
@@ -2423,15 +2534,15 @@ double taneja(const Rcpp::NumericVector& P, const Rcpp::NumericVector& Q, bool t
                                 if(denominator == 0.0){
                                         
                                         if (unit == "log"){
-                                                dist += (PQsum / 2.0) * log(PQsum / 0.00001);
+                                                dist += (PQsum / 2.0) * log(PQsum / epsilon);
                                         }
                                         
                                         else if (unit == "log2"){
-                                                dist += (PQsum / 2.0) * custom_log2(PQsum / 0.00001);
+                                                dist += (PQsum / 2.0) * custom_log2(PQsum / epsilon);
                                         }
                                         
                                         else if (unit == "log10"){
-                                                dist += (PQsum / 2.0) * custom_log10(PQsum / 0.00001);
+                                                dist += (PQsum / 2.0) * custom_log10(PQsum / epsilon);
                                         } else {
                                                 Rcpp::stop("Please choose from units: log, log2, or log10.");
                                         }
@@ -2465,12 +2576,26 @@ double taneja(const Rcpp::NumericVector& P, const Rcpp::NumericVector& Q, bool t
 //' @param P a numeric vector storing the first distribution.
 //' @param Q a numeric vector storing the second distribution.
 //' @param testNA a logical value indicating whether or not distributions shall be checked for \code{NA} values.
+//' @param epsilon epsilon a small value to address cases in the distance computation where division by zero occurs. In
+//' these cases, x / 0 or 0 / 0 will be replaced by \code{epsilon}. The default is \code{epsilon = 0.00001}.
+//' However, we recommend to choose a custom \code{epsilon} value depending on the size of the input vectors,
+//' the expected similarity between compared probability density functions and 
+//' whether or not many 0 values are present within the compared vectors.
+//' As a rough rule of thumb we suggest that when dealing with very large 
+//' input vectors which are very similar and contain many \code{0} values,
+//' the \code{epsilon} value should be set even smaller (e.g. \code{epsilon = 0.000000001}),
+//' whereas when vector sizes are small or distributions very divergent then
+//' higher \code{epsilon} values may also be appropriate (e.g. \code{epsilon = 0.01}).
+//' Addressing this \code{epsilon} issue is important to avoid cases where distance metrics
+//' return negative values which are not defined and only occur due to the
+//' technical issues of computing x / 0 or 0 / 0 cases.
 //' @author Hajk-Georg Drost
 //' @examples
-//' kumar_johnson(P = 1:10/sum(1:10), Q = 20:29/sum(20:29), testNA = FALSE)
+//' kumar_johnson(P = 1:10/sum(1:10), Q = 20:29/sum(20:29),
+//'  testNA = FALSE, epsilon = 0.00001)
 //' @export
 // [[Rcpp::export]]
-double kumar_johnson(const Rcpp::NumericVector& P, const Rcpp::NumericVector& Q, bool testNA){
+double kumar_johnson(const Rcpp::NumericVector& P, const Rcpp::NumericVector& Q, bool testNA, double epsilon){
         
         int    P_len      = P.size();
         int    Q_len      = Q.size();
@@ -2492,7 +2617,7 @@ double kumar_johnson(const Rcpp::NumericVector& P, const Rcpp::NumericVector& Q,
                         divisor = (2.0 * pow(P[i] * Q[i], 1.5));
                         
                         if(divisor == 0.0){
-                                dist += pow(pow(P[i], 2.0) - pow(Q[i], 2.0), 2.0) / 0.00001;
+                                dist += pow(pow(P[i], 2.0) - pow(Q[i], 2.0), 2.0) / epsilon;
                         } else {
                                 dist += pow(pow(P[i], 2.0) - pow(Q[i], 2.0), 2.0) / divisor;
                         }
@@ -2504,7 +2629,7 @@ double kumar_johnson(const Rcpp::NumericVector& P, const Rcpp::NumericVector& Q,
                         divisor = (2.0 * pow(P[i] * Q[i], 1.5));
                         
                         if(divisor == 0.0){
-                                dist += pow(pow(P[i], 2.0) - pow(Q[i], 2.0), 2.0) / 0.00001;
+                                dist += pow(pow(P[i], 2.0) - pow(Q[i], 2.0), 2.0) / epsilon;
                         } else {
                                 dist += pow(pow(P[i], 2.0) - pow(Q[i], 2.0), 2.0) / divisor;
                         }
