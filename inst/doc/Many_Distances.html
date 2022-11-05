@@ -28,6 +28,7 @@
     </style>
 
 
+
 <style type="text/css">
   code {
     white-space: pre;
@@ -109,13 +110,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   for (var i = 0; i < sheets.length; i++) {
     if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
     try { var rules = sheets[i].cssRules; } catch (e) { continue; }
-    for (var j = 0; j < rules.length; j++) {
+    var j = 0;
+    while (j < rules.length) {
       var rule = rules[j];
       // check if there is a div.sourceCode rule
-      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -174,11 +182,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##  distance(rbind(P, Q), method = &quot;euclidean&quot;, test.na = FALSE,      mute.message = TRUE)
 ##                                                                  euclidean(P, Q, FALSE)
 ##                                dist_one_one(P, Q, method = &quot;euclidean&quot;, testNA = FALSE)
-##     min      lq     mean  median      uq      max neval
-##  20.581 21.7560 25.74881 23.1155 23.8055  284.644   100
-##  28.083 28.7445 51.33078 29.8440 31.6055 2132.509   100
-##   2.509  2.7240  3.39208  3.0130  3.5095    8.403   100
-##   3.708  4.0495  6.02215  4.7150  5.0955  117.806   100</code></pre>
+##     min      lq     mean  median     uq      max neval
+##  21.024 22.0665 26.83100 23.4125 23.901  336.156   100
+##  32.786 33.7415 58.98310 34.5680 35.239 2315.590   100
+##   2.586  2.8385  3.17071  3.0570  3.464    4.778   100
+##   3.871  4.4115  5.46040  4.9085  5.213   56.764   100</code></pre>
 <p>All of them return the same, single value. However, as you can see in the benchmark above, some are more flexible, and others are faster.</p>
 </div>
 <div id="dist_one_many" class="section level2">
@@ -201,10 +209,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##                                      as.matrix(dist(rbind(P, M), method = &quot;euclidean&quot;))[1, ][-1]
 ##  distance(rbind(P, M), method = &quot;euclidean&quot;, test.na = FALSE,      mute.message = TRUE)[1, ][-1]
 ##                                        dist_one_many(P, M, method = &quot;euclidean&quot;, testNA = FALSE)
-##        min         lq       mean     median         uq       max neval
-##    284.485   370.5515   456.4489   448.7075   533.3575   776.544   100
-##  23620.943 25740.1705 29194.4739 27281.6785 32796.1225 45305.363   100
-##     22.739    28.7505    34.3501    34.4265    37.6905   124.308   100</code></pre>
+##        min        lq        mean    median        uq       max neval
+##    316.244   397.361   494.36541   491.927   568.745   849.122   100
+##  26182.286 28366.181 32239.31384 30350.948 35339.433 50017.425   100
+##     27.124    31.942    39.40121    37.929    43.306   127.129   100</code></pre>
 <p>The <code>dist_one_many()</code> returns a vector of values. It is, in this case, much faster than <code>distance()</code>, and visibly faster than <code>dist()</code> while allowing for more possible distance measures to be used.</p>
 </div>
 <div id="dist_many_many" class="section level2">
@@ -233,11 +241,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <pre><code>## Unit: microseconds
 ##                                                          expr      min
-##                                            many_dists(M1, M2) 2310.314
-##  dist_many_many(M1, M2, method = &quot;euclidean&quot;, testNA = FALSE)   37.081
-##         lq       mean    median        uq       max neval
-##  2569.2030 2878.19842 2668.8310 2813.3190 12068.858   100
-##    42.0015   97.64644   45.9455   49.4415  5060.589   100</code></pre>
+##                                            many_dists(M1, M2) 2850.561
+##  dist_many_many(M1, M2, method = &quot;euclidean&quot;, testNA = FALSE)   40.507
+##         lq       mean    median       uq      max neval
+##  3218.5515 3782.73070 3417.8890 3681.904 16620.19   100
+##    46.2875   53.14176   50.5715   54.483   172.86   100</code></pre>
 <p>Both <code>many_dists()</code>and <code>dist_many_many()</code> return a matrix. The above benchmark concludes that <code>dist_many_many()</code> is about 30 times faster than our custom <code>many_dists()</code> approach.</p>
 </div>
 
