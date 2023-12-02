@@ -1,7 +1,6 @@
 philentropy
 ===========
-
-[![Travis-CI Build Status](https://travis-ci.org/HajkD/philentropy.svg?branch=master)](https://travis-ci.org/HajkD/philentropy)  [![status](http://joss.theoj.org/papers/cad5ffc246ce197b06ccad1af7d2932a/status.svg)](https://joss.theoj.org/papers/10.21105/joss.00765)
+ [![status](http://joss.theoj.org/papers/cad5ffc246ce197b06ccad1af7d2932a/status.svg)](https://joss.theoj.org/papers/10.21105/joss.00765)
 [![rstudio mirror downloads](http://cranlogs.r-pkg.org/badges/philentropy)](https://github.com/r-hub/cranlogs.app)
 [![rstudio mirror downloads](http://cranlogs.r-pkg.org/badges/grand-total/philentropy)](https://github.com/r-hub/cranlogs.app)
 
@@ -23,7 +22,7 @@ the people who share it with me.
 
 ### Installation
 ```r
-# install philentropy version 0.6.0 from CRAN
+# install philentropy version 0.8.0 from CRAN
 install.packages("philentropy")
 ```
 
@@ -176,6 +175,8 @@ The current status of the package as well as a detailed history of the functiona
 
 ### Studies that successfully applied the `philentropy` package
 
+> - __Annelid functional genomics reveal the origins of bilaterian life cycles__ FM Martín-Zamora, Y Liang, K Guynes et al.- __Nature__, 2023
+>
 > - __An atlas of gene regulatory elements in adult mouse cerebrum__ YE Li, S Preissl, X Hou, Z Zhang, K Zhang et al.- __Nature__, 2021
 >
 > - __Convergent somatic mutations in metabolism genes in chronic liver disease__ S Ng, F Rouhani, S Brunner, N Brzozowska et al. __Nature__, 2021
@@ -184,7 +185,13 @@ The current status of the package as well as a detailed history of the functiona
 >
 > - __High-content single-cell combinatorial indexing__ R Mulqueen et al. - __Nature Biotechnology__, 2021 
 >
+> - __A comparative atlas of single-cell chromatin accessibility in the human brain__
+YE Li, S Preissl, M Miller, ND Johnson, Z Wang et al. - __Science__, 2023
+>
 > - __Extinction at the end-Cretaceous and the origin of modern Neotropical rainforests__ MR Carvalho, C Jaramillo et al. - __Science__, 2021
+>
+> - __sciCSR infers B cell state transition and predicts class-switch recombination dynamics using single-cell transcriptomic data__
+JCF Ng, G Montamat Garcia, AT Stewart et al. - __Nature Methods__, 2023
 >
 > - __HERMES: a molecular-formula-oriented method to target the metabolome__
 R Giné, J Capellades, JM Badia et al. - __Nature Methods__, 2021
@@ -192,22 +199,35 @@ R Giné, J Capellades, JM Badia et al. - __Nature Methods__, 2021
 > - __The genetic architecture of temperature adaptation is shaped by population ancestry and not by selection regime__ KA Otte, V Nolte, F Mallard et al. - __Genome Biology__, 2021
 >
 > - __The Tug1 lncRNA locus is essential for male fertility__ JP Lewandowski et al. - __Genome Biology__, 2020
+>
+> - __Transcriptional vulnerabilities of striatal neurons in human and rodent models of Huntington's disease__ A Matsushima, SS Pineda, JR Crittenden et al. - __Nature Communications__, 2023
 > 
 > - __Resolving the structure of phage–bacteria interactions in the context of natural diversity__ KM Kauffman, WK Chang, JM Brown et al. - __Nature Communications__, 2022
 >
 > - __Gut microbiome-mediated metabolism effects on immunity in rural and urban African populations__
 M Stražar, GS Temba, H Vlamakis et al. - __Nature Communications__, 2021
 >
-> - __Aging, inflammation and DNA damage in the somatic testicular niche with idiopathic germ cell aplasia__ M Alfano, AS Tascini, F Pederzoli et al. - __Nature communications__, 2021
+> - __Aging, inflammation and DNA damage in the somatic testicular niche with idiopathic germ cell aplasia__ M Alfano, AS Tascini, F Pederzoli et al. - __Nature Communications__, 2021
 >
 > - __Single cell census of human kidney organoids shows reproducibility and diminished off-target cells after transplantation__ A Subramanian et al. - __Nature Communications__, 2019
+>
+> - __A single-cell multi-omic atlas spanning the adult rhesus macaque brain__
+KL Chiou, X Huang, MO Bohlen et al. - __Science Advances__, 2023
 >
 > - __Different languages, similar encoding efficiency: Comparable information rates across the human communicative niche__
 C Coupé, YM Oh, D Dediu, F Pellegrino - __Science Advances__, 2019
 >
 > - __Single-cell deletion analyses show control of pro–T cell developmental speed and pathways by Tcf7, Spi1, Gata3, Bcl11a, Erg, and Bcl11b__ W Zhou, F Gao, M Romero-Wolf, S Jo, EV Rothenberg - __Science Immunology__, 2022
 >
-> - __Large-scale chromatin reorganization reactivates placenta-specific genes that drive cellular aging__ Z Liu, Q Ji, J Ren, P Yan, Z Wu, S Wang, L Sun, Z Wang et al - __Developmental Cell__, 2022
+> - __Large-scale iterated singing experiments reveal oral transmission mechanisms underlying music evolution__
+M Anglada-Tort, PMC Harrison, H Lee, N Jacoby - __Current Biology__, 2023
+>
+> - __TAS-Seq is a robust and sensitive amplification method for bead-based scRNA-seq__ S Shichino, S Ueha, S Hashimoto, T Ogawa et al. - __Communications biology__, 2022
+>
+> - Mapping hormone-regulated cell-cell interaction networks in the human breast at single-cell resolution
+LM Murrow, RJ Weber, JA Caruso et al. - __Cell Systems__, 2022
+>
+> - __Large-scale chromatin reorganization reactivates placenta-specific genes that drive cellular aging__ Z Liu, Q Ji, J Ren, P Yan, Z Wu, S Wang, L Sun, Z Wang et al. - __Developmental Cell__, 2022
 >
 > - __Direct epitranscriptomic regulation of mammalian translation initiation through N4-acetylcytidine__ D Arango, D Sturgill, R Yang, T Kanai, P Bauer et al. - __Molecular Cell__, 2022
 >
@@ -215,6 +235,12 @@ C Coupé, YM Oh, D Dediu, F Pellegrino - __Science Advances__, 2019
 >
 > - __Sex and hatching order modulate the association between MHC‐II diversity and fitness in early‐life stages of a wild seabird__
 M Pineaux et al - __Molecular Ecology__, 2020
+>
+> - __BELMM: Bayesian model selection and random walk smoothing in time-series clustering__
+O Sarala, T Pyhäjärvi, MJ Sillanpää - __Bioinformatics__, 2023
+>
+> - __Cellsig plug-in enhances CIBERSORTx signature selection for multi-dataset transcriptomes with sparse multilevel modelling__
+MA Al Kamran Khan, J Wu, S Yuhan et al. - __Bioinformatics__, 2023
 >
 > - __How the Choice of Distance Measure Influences the Detection of Prior-Data Conflict__
 K Lek, R Van De Schoot - __Entropy__, 2019
@@ -226,9 +252,15 @@ EF Davis-Marcisak, TD Sherman et al. - __Cancer research__, 2019
 >
 > - __Impact of Gut Microbiome on Hypertensive Patients with Low-Salt Intake: Shika Study Results__ S Nagase et al. - __Frontiers in Medicine__, 2020
 >
+> - Children's social networks in developmental psychology: A network approach to capture and describe early social environments
+N Burke, N Brezack, A Woodward - __Frontiers in psychology__, 2022
+>
 > - __Combined TCR Repertoire Profiles and Blood Cell Phenotypes Predict Melanoma Patient Response to Personalized Neoantigen Therapy plus Anti-PD-1__ A Poran et al. - __Cell Reports Medicine__, 2020
 >
 > - __Identification of a glioma functional network from gene fitness data using machine learning__ C Xiang, X Liu, D Zhou, Y Zhou, X Wang, F Chen - __Journal of Cellular and Molecular Medicine__, 2022
+>
+> - __Whole genome assemblies of Zophobas morio and Tenebrio molitor__
+S Kaur, SA Stinson, GC diCenzo - __G3: Genes, Genomes, Genetics__, 2023
 >
 > - __Prediction of New Risk Genes and Potential Drugs for Rheumatoid Arthritis from Multiomics Data__ AM Birga, L Ren, H Luo, Y Zhang, J Huang - __Computational and Mathematical Methods in Medicine__, 2022
 >
@@ -238,6 +270,9 @@ EF Davis-Marcisak, TD Sherman et al. - __Cancer research__, 2019
 >
 > - __SEDE-GPS: socio-economic data enrichment based on GPS information__
 T Sperlea, S Füser, J Boenigk, D Heider - __BMC bioinformatics__, 2018
+>
+> - __Longitudinal analysis on the ecological dynamics of the cervicovaginal microbiome in hrHPV infection__
+MA Molina, WJG Melchers, et al. - __Computational and structural biotechnology__, 2023
 >
 > - __Spatial and molecular anatomy of germ layers in the gastrulating primate embryo__ G Cui, S Feng, Y Yan, L Wang, X He, X Li, et al. - __bioRxiv__, 2022
 >
