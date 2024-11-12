@@ -51,7 +51,7 @@ overflow: visible;
 </style>
 <style type="text/css" data-origin="pandoc">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -62,7 +62,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
 { counter-reset: source-line 0; }
@@ -412,11 +412,11 @@ approaches - (a) build-in R <code>dist()</code> function, (b)
 ##  distance(rbind(P, Q), method = &quot;euclidean&quot;, test.na = FALSE,      mute.message = TRUE)
 ##                                                                  euclidean(P, Q, FALSE)
 ##                                dist_one_one(P, Q, method = &quot;euclidean&quot;, testNA = FALSE)
-##   min     lq     mean median    uq    max neval
-##  5699 5924.5  7294.72   6191  6396 101803   100
-##  9307 9676.0 16451.25   9922 10168 637222   100
-##   820  902.0  1090.60    984  1066  11439   100
-##  1148 1271.0  2227.53   1394  1476  82738   100</code></pre>
+##   min     lq     mean median     uq    max neval
+##  5248 5514.5  6330.40   5740 5904.0  62730   100
+##  7626 8036.0 12712.05   8200 8425.5 450713   100
+##   492  533.0   954.89    574  656.0  37720   100
+##   779  881.5  1258.70    943 1025.0  32472   100</code></pre>
 <p>All of them return the same, single value. However, as you can see in
 the benchmark above, some are more flexible, and others are faster.</p>
 </div>
@@ -451,10 +451,10 @@ measure between <code>P</code> and values in this row.</p>
 ##                                      as.matrix(dist(rbind(P, M), method = &quot;euclidean&quot;))[1, ][-1]
 ##  distance(rbind(P, M), method = &quot;euclidean&quot;, test.na = FALSE,      mute.message = TRUE)[1, ][-1]
 ##                                        dist_one_many(P, M, method = &quot;euclidean&quot;, testNA = FALSE)
-##       min        lq        mean    median        uq       max neval
-##   123.615  135.3615   151.16782  147.7025   160.720   245.180   100
-##  8769.736 9171.9050 10335.37061 9706.3195 11543.468 14245.655   100
-##     9.430    9.7990    11.55667   10.4550    11.808    43.993   100</code></pre>
+##       min       lq       mean    median        uq      max neval
+##    64.780   67.896   73.16450   70.9095   74.9685  150.142   100
+##  6200.061 6293.172 6468.79058 6349.9775 6662.4180 8237.433   100
+##     7.667    8.446    9.19343    8.7535    9.1225   38.007   100</code></pre>
 <p>The <code>dist_one_many()</code> returns a vector of values. It is,
 in this case, much faster than <code>distance()</code>, and visibly
 faster than <code>dist()</code> while allowing for more possible
@@ -492,11 +492,11 @@ solve this problem, we can create our own -
 <span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a>)</span></code></pre></div>
 <pre><code>## Unit: microseconds
 ##                                                          expr     min      lq
-##                                            many_dists(M1, M2) 943.902 969.937
-##  dist_many_many(M1, M2, method = &quot;euclidean&quot;, testNA = FALSE)  14.063  14.350
-##        mean  median       uq      max neval
-##  1084.07116 984.984 1010.138 3920.051   100
-##    15.17943  14.555   14.842   35.875   100</code></pre>
+##                                            many_dists(M1, M2) 795.810 874.284
+##  dist_many_many(M1, M2, method = &quot;euclidean&quot;, testNA = FALSE)  12.505  13.940
+##        mean   median       uq      max neval
+##  1034.74775 934.6155 1000.216 3372.045   100
+##    16.12899  15.4160   17.507   32.718   100</code></pre>
 <p>Both <code>many_dists()</code>and <code>dist_many_many()</code>
 return a matrix. The above benchmark concludes that
 <code>dist_many_many()</code> is about 30 times faster than our custom

@@ -6,8 +6,6 @@
 #' 
 #' \itemize{
 #' \item \code{method = "empirical"} : generates the relative frequency of the data \code{x/sum(x)}.
-#' \item
-#' \item
 #' }
 #' 
 #' @param x a numeric vector storing count values.
@@ -15,17 +13,11 @@
 #' @author Hajk-Georg Drost
 #' @return a numeric probability vector.
 #' @examples
-#' 
 #' # generate a count vector
 #' x <- runif(100)
-#' 
 #' # generate a probability vector from corresponding counts
-#' # method = "empirical"
-#' x.prob <- estimate.probability(x, method = "empirical")
-#' 
+#' x.prob <- estimate.probability(x, method = 'empirical')
 #' @export
-
-
 estimate.probability <- function(x, method = "empirical"){
         
         if(!is.element(method,c("empirical")))
@@ -35,5 +27,4 @@ estimate.probability <- function(x, method = "empirical"){
                 # fastest implementation for relative frequency 
                 return(x/sum(x))
         }
-        
 }
