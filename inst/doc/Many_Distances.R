@@ -46,8 +46,14 @@ many_dists = function(m1, m2){
 
 ## -----------------------------------------------------------------------------
 # install.packages("microbenchmark")
-microbenchmark::microbenchmark(
-  many_dists(M1, M2),
-  dist_many_many(M1, M2, method = "euclidean", testNA = FALSE)
+bm <- microbenchmark::microbenchmark(
+  `many_dists` = many_dists(M1, M2),
+  `dist_many_many` = dist_many_many(M1, M2, method = "euclidean", testNA = FALSE)
 )
+bm
+
+## ----echo=FALSE---------------------------------------------------------------
+x <- aggregate(bm$time, by = list(expr=bm$expr), FUN = mean)
+y <- x$x
+names(y) <- x$expr
 
